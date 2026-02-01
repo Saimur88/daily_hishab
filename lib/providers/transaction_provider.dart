@@ -1,25 +1,56 @@
 import 'package:flutter/material.dart';
-import '../models/transaction.dart';
 import 'package:daily_hishab/repositories/transaction_repository.dart';
+import 'package:daily_hishab/models/transaction.dart';
 
-class TransactionProvider with ChangeNotifier {
-  final List<Transaction> _transactions = [];
+class TransactionProvider extends ChangeNotifier {
+
+  final List<Transaction> _transactions =[];
+
+
   final TransactionRepository _repository = TransactionRepository();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
 
   List<Transaction> get transactions => _transactions;
 
-  Future<void> loadTransactions() async {
-    final fetchedTransactions = await _repository.fetchTransactions();
-    _transactions
-      ..clear()
-      ..addAll(fetchedTransactions);
-    notifyListeners();
+  TransactionProvider() {
+    loadTransactions();
   }
 
-  void addTransaction(Transaction tx) {
+  Future<void> loadTransactions() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try{
+      final fetchedTransactions = await _repository.fetchTransactions();
+      _transactions //Cascade operator
+        ..clear() //cant do _transactions = fetchedTransactions bu .clear() can be done
+        ..addAll(fetchedTransactions);
+      notifyListeners();
+    }catch (e){
+      _errorMessage = 'Failed to fetch transactions.';
+    }finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addTransaction(Transaction tx) async {
+    await _repository.addTransaction(tx);
+
     _transactions.add(tx);
     notifyListeners();
   }
+
+  // Future<void> addTransaction(Transaction tx) async {
+  //   await _repository.addTransaction(tx);
+  //   await loadTransactions();
+  // }
+
 
   double get totalExpense {
     double sum = 0;

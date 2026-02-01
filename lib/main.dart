@@ -2,7 +2,12 @@ import 'package:daily_hishab/providers/transaction_provider.dart';
 import 'package:daily_hishab/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-void main(){
+import 'package:firebase_core/firebase_core.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TransactionProvider()),

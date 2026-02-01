@@ -1,8 +1,9 @@
-import '../models/transaction.dart';
+import 'package:daily_hishab/models/transaction.dart';
 
 class TransactionRepository {
   Future<List<Transaction>> fetchTransactions() async {
     // Firebase will come here later
+
     return [];
   }
 

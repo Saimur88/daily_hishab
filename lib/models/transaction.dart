@@ -1,5 +1,4 @@
 enum TransactionType { expense, income }
-
 class Transaction {
   final double amount;
   final String category;

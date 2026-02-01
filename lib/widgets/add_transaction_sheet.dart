@@ -1,27 +1,21 @@
 import 'package:daily_hishab/models/transaction.dart';
+import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:flutter/material.dart';
-class AddTransactionSheet extends StatefulWidget {
-  const AddTransactionSheet({super.key});
+import 'package:provider/provider.dart';
 
-  @override
-  State<AddTransactionSheet> createState() => _AddTransactionSheetState();
-}
-
-List<String> expenseCategories = ['Shopping', 'Entertainment', 'Other'];
-List<String> incomeCategories = ['Salary', 'Bonus', 'Business','Other'];
-
-
-class _AddTransactionSheetState extends State<AddTransactionSheet> {
-
-  final TextEditingController _amountController = TextEditingController();
-  String _selectedCategory = expenseCategories[0];
-  String _header = "Add Expense";
-
-
-  TransactionType _type = TransactionType.expense;
+class AddTransactionSheet extends StatelessWidget {
+   const AddTransactionSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final provider = context.read<AddTransactionProvider>();
+    final header = context.select((AddTransactionProvider p) => p.header);
+    final selectedCategory = context.select((AddTransactionProvider p) => p.selectedCategory);
+    final type = context.select((AddTransactionProvider p) => p.type);
+    final controller = context.read<AddTransactionProvider>().controller;
+
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -36,29 +30,19 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
-                      onPressed: (){
-                        setState(() {
-                          _type = TransactionType.expense;
-                          _selectedCategory = expenseCategories[0];
-                          _header = "Add Expense";
-                          _amountController.clear();
-                        });
-                      },
-                      child: Text("Add Expense")
-                  ),
+                    onPressed: (){
+                      context.read<AddTransactionProvider>().addExpenseSheet();
+                    },
+                    child: Text('Add Expense')
+                ),
                 Text("|",style: TextStyle(
                   fontSize: 30,
                 ),),
                 TextButton(
-                    onPressed: (){
-                      setState(() {
-                        _type = TransactionType.income;
-                        _selectedCategory = incomeCategories[0];
-                        _header = "Add Income";
-                        _amountController.clear();
-                      });
+                    onPressed: () {
+                      context.read<AddTransactionProvider>().addIncomeSheet();
                     },
-                    child: Text("Add Income")
+                    child: Text('Add Income')
                 )
               ],
             ),
@@ -68,7 +52,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               color: Colors.black,
             ),
             Center(
-              child: Text( _header ,style: TextStyle(
+              child: Text( header ,style: TextStyle(
                 fontSize: 20,
               ),),
             ),
@@ -77,15 +61,15 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               children: [
                 SizedBox(width: 30,height: 30,),
                 Text("Amount",style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15
                 ),),
               ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 20),
               child: TextField(
-                controller: _amountController,
+                controller: controller,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   floatingLabelStyle: TextStyle(
@@ -101,7 +85,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             Row(
               children: [
                 SizedBox(width: 30,height: 30,),
-                Text(_type == TransactionType.expense ? "Expense Category" : "Income Category",style: TextStyle(
+                Text(provider.category_label,style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 15
                 ),),
@@ -110,34 +94,31 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 20),
               child: DropdownButtonFormField(
-                initialValue: _selectedCategory,
+                initialValue: selectedCategory,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  )
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )
                 ),
-                items: _type == TransactionType.expense ? expenseCategories.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList() : incomeCategories.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList() ,
+                items: provider.categories.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList(),
                 borderRadius: BorderRadius.circular(20),
                 onChanged: (newValue){
-                  setState(() {
-                    _selectedCategory = newValue!;
-                  });
+                    provider.changeSelected(newValue!);
                 },),
             ),
             SizedBox(height: 20,),
             Center(child: ElevatedButton(
-                onPressed: (){
-
+                onPressed: () async {
                   final transaction = Transaction(
-                      amount: double.parse(_amountController.text),
-                      category: _selectedCategory,
-                      type: _type);
+                      amount: double.parse(controller.text),
+                      category: selectedCategory, type: type);
                   Navigator.pop(context, transaction);
-                }, child: Text(_type == TransactionType.expense ? "Add Expense" : "Add Income")))
+                  }, child: Text(header))),
 
           ],
         ),
       ),
     );
+
   }
 }
