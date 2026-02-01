@@ -86,6 +86,11 @@ class TransactionProvider extends ChangeNotifier {
 
     return data;
   }
+  Future<void> deleteTransaction(Transaction tx) async {
+    //later will come firebase
+    _transactions.remove(tx);
+    notifyListeners();
+  }
 
 
 }
