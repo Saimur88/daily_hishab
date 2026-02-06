@@ -5,6 +5,27 @@ class AddTransactionProvider extends ChangeNotifier{
 
   final TextEditingController controller = TextEditingController();
 
+  bool _isEditing = false;
+  bool get isEditing => _isEditing;
+
+  void setEditing(bool value) {
+    _isEditing = value;
+  }
+
+
+
+  bool _initialized = false;
+
+  void loadFromTransaction(Transaction tx) async {
+    if(_initialized) return;
+    _isEditing = true;
+    controller.text = tx.amount.toString();
+    _type = tx.type;
+    _selectedCategory = tx.category;
+    _initialized = true;
+    notifyListeners();
+  }
+
   @override
   void dispose(){
     controller.dispose();
@@ -18,6 +39,12 @@ class AddTransactionProvider extends ChangeNotifier{
 
   TransactionType _type = TransactionType.expense;
   String _selectedCategory = "Shopping";
+
+  void setType (TransactionType type ) async {
+    _type = type;
+    _selectedCategory = categories.first;
+    notifyListeners();
+  }
 
   TransactionType get type => _type;
   String get selectedCategory => _selectedCategory;
@@ -36,7 +63,7 @@ class AddTransactionProvider extends ChangeNotifier{
     // Firebase will come here later)
     _type = TransactionType.expense;
     _selectedCategory = _expenseCategories.first;
-    controller.clear();
+    if(!_isEditing)controller.clear();
     notifyListeners();
   }
 
@@ -49,7 +76,7 @@ class AddTransactionProvider extends ChangeNotifier{
     // Firebase will come here later)
     _type = TransactionType.income;
     _selectedCategory = _incomeCategories.first;
-    controller.clear();
+    if(!_isEditing)controller.clear();
     notifyListeners();
   }
 

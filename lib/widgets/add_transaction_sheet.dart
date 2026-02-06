@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddTransactionSheet extends StatelessWidget {
-   const AddTransactionSheet({super.key});
+  final Transaction? existingTransaction;
+   const AddTransactionSheet({super.key, this.existingTransaction});
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +111,11 @@ class AddTransactionSheet extends StatelessWidget {
             Center(child: ElevatedButton(
                 onPressed: () async {
                   final transaction = Transaction(
+                      id: existingTransaction?.id ?? DateTime.now().toIso8601String(),
                       amount: double.parse(controller.text),
-                      category: selectedCategory, type: type);
+                      category: selectedCategory,
+                      type: type)
+                  ;
                   Navigator.pop(context, transaction);
                   }, child: Text(header))),
 
