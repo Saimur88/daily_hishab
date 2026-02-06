@@ -14,6 +14,7 @@ class AddTransactionSheet extends StatelessWidget {
     final header = context.select((AddTransactionProvider p) => p.header);
     final selectedCategory = context.select((AddTransactionProvider p) => p.selectedCategory);
     final type = context.select((AddTransactionProvider p) => p.type);
+    final categoryLabel = context.select((AddTransactionProvider p) => p.category_label);
     final controller = context.read<AddTransactionProvider>().controller;
 
 
@@ -86,7 +87,7 @@ class AddTransactionSheet extends StatelessWidget {
             Row(
               children: [
                 SizedBox(width: 30,height: 30,),
-                Text(provider.category_label,style: TextStyle(
+                Text(categoryLabel,style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 15
                 ),),

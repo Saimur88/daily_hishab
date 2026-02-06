@@ -3,6 +3,7 @@ import '../models/transaction.dart';
 
 class AddTransactionProvider extends ChangeNotifier{
 
+
   final TextEditingController controller = TextEditingController();
 
   bool _isEditing = false;

@@ -28,7 +28,7 @@ class ExpenseHistoryList extends StatelessWidget {
             key: ValueKey(transaction),
             direction: DismissDirection.horizontal,
             background: Container(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(right: 20),
               color: Colors.blue,
               child: const Icon(Icons.edit,color: Colors.white,),
@@ -41,12 +41,22 @@ class ExpenseHistoryList extends StatelessWidget {
             ),
             confirmDismiss: (direction) async {
               if(direction == DismissDirection.startToEnd){
-                Future.microtask(() {
-                showModalBottomSheet(
+                Future.microtask(() async {
+                 final updatedTransaction = showModalBottomSheet(
                     context: context,
+                    isScrollControlled: true,
                     builder: (_) => ChangeNotifierProvider(
-                        create:(_) => AddTransactionProvider(),
-                    child: AddTransactionSheet(existingTransaction: transaction,),));
+                        create:(_) {
+                          final provider = AddTransactionProvider();
+                          provider.loadFromTransaction(transaction);
+                          return provider;
+                          },
+                    child: AddTransactionSheet(existingTransaction: transaction,),
+                    ),
+                 );
+                 if(updatedTransaction != null){
+                   return context.read<TransactionProvider>().updateTransaction(await updatedTransaction);
+                 }
                 });
                 return false;
 
