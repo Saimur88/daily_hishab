@@ -56,7 +56,7 @@ class AddTransactionProvider extends ChangeNotifier{
   String get header =>
       type == TransactionType.expense ? "Add Expense" : "Add Income";
 
-  String get category_label =>
+  String get categoryLabel =>
       type == TransactionType.expense ? "Expense Category" : "Income Category";
 
 

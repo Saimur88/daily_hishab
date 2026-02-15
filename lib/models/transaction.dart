@@ -1,4 +1,4 @@
-enum TransactionType { expense, income }
+enum TransactionType { expense , income }
 class Transaction {
   final String id;
   final double amount;
@@ -9,7 +9,7 @@ class Transaction {
     required this.id,
     required this.amount,
     required this.category,
-    required this.type
+    required this.type,
   });
 
   @override

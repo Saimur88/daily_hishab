@@ -1,5 +1,6 @@
 import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/balance_summary_card.dart';
+import 'package:daily_hishab/widgets/income_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
@@ -61,6 +62,9 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text('Expense History', style: TextStyle(fontSize: 20)),
             Expanded(child: ExpenseHistoryList(transactions: transactions)),
+            SizedBox(height: 20),
+            Text('Income History', style: TextStyle(fontSize: 20)),
+            Expanded(child: IncomeHistoryList(transactions: transactions,))
           ],
         ),
       ),

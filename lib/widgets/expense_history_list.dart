@@ -3,8 +3,8 @@ import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/add_transaction_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/transaction_provider.dart';
+
 
 class ExpenseHistoryList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -12,91 +12,97 @@ class ExpenseHistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (transactions.isEmpty) {
-      return Center(
-        child: Text(
-          "No expenses yet. \nAdd your first one to get started",
-          textAlign: TextAlign.center,
-        ),
+    final expenseTransaction = transactions
+    .where((t) => t.type == TransactionType.expense)
+    .toList();
+    if (expenseTransaction.isEmpty) {
+      return Text(
+        "No expenses yet. \nAdd your first one to get started",
+        textAlign: TextAlign.center,
       );
     } else {
       return ListView.builder(
-        itemCount: transactions.length,
+        itemCount: expenseTransaction.length,
         itemBuilder: (context, index) {
-          final transaction = transactions[index];
+          final indexedTransaction = expenseTransaction[index];
           return Dismissible(
-            key: ValueKey(transaction),
+            key: ValueKey(expenseTransaction[index].id),
             direction: DismissDirection.horizontal,
             background: Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(right: 20),
-              color: Colors.blue,
-              child: const Icon(Icons.edit,color: Colors.white,),
+              color: Colors.red.shade400,
+              child: const Icon(Icons.delete_forever, color: Colors.white),
             ),
             secondaryBackground: Container(
               alignment: Alignment.centerRight,
               padding: EdgeInsets.only(right: 20),
-              color: Colors.red.shade700,
-              child: const Icon(Icons.delete_forever,color: Colors.white,),
+              color: Colors.red.shade400,
+              child: const Icon(Icons.delete_forever, color: Colors.white),
             ),
-            confirmDismiss: (direction) async {
-              if(direction == DismissDirection.startToEnd){
-                Future.microtask(() async {
-                 final updatedTransaction = showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (_) => ChangeNotifierProvider(
-                        create:(_) {
-                          final provider = AddTransactionProvider();
-                          provider.loadFromTransaction(transaction);
-                          return provider;
-                          },
-                    child: AddTransactionSheet(existingTransaction: transaction,),
+            confirmDismiss: (_) async {
+              return await showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text('Delete Transaction'),
+                  content: const Text('This action cannot be undone.'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: const Text('Cancel'),
                     ),
-                 );
-                 if(updatedTransaction != null){
-                   return context.read<TransactionProvider>().updateTransaction(await updatedTransaction);
-                 }
-                });
-                return false;
-
-
-              } else {
-                return await showDialog(
-                    context: context,
-                    builder:(_) => AlertDialog(
-                      title: const Text('Delete Transaction'),
-                      content: const Text('This action cannot be undone.'),
-                      actions: [
-                        TextButton(onPressed: (){
-                          Navigator.of(context).pop(false);
-                        }, child: const Text('Cancel')),
-                        TextButton(onPressed: (){
-                          Navigator.of(context).pop(true);
-                        }, child: const Text('Delete')),
-                      ],
-                    ));
-              }
-            },
-            onDismissed: (direction){
-              if(direction == DismissDirection.endToStart){
-              context.read<TransactionProvider>().deleteTransaction(transaction);
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text('Delete'),
+                    ),
+                  ],
+                ),
+              );
+              },
+            onDismissed: (direction) {
+              if (direction == DismissDirection.endToStart) {
+                context.read<TransactionProvider>().deleteTransaction(
+                  indexedTransaction,
+                );
               }
             },
             child: Card(
               elevation: 2,
               child: ListTile(
-                leading: Text('${index + 1}.',style: TextStyle(
-                  fontSize: 15,
-                ),),
+                onTap: () async {
+                  final updatedTransaction = await showModalBottomSheet(
+                    isScrollControlled: true,
+                      context: context,
+                      builder: (_) => ChangeNotifierProvider(
+                          create: (_) {
+                           final provider = AddTransactionProvider();
+                           provider.loadFromTransaction(indexedTransaction);
+                           return provider;
+                          },
+                          child: AddTransactionSheet(
+                            existingTransaction: indexedTransaction,
+
+                      ),
+                      ),
+                  );
+                  if (updatedTransaction != null) {
+                    context.read<TransactionProvider>().updateTransaction(
+                      updatedTransaction,
+                    );
+                  }
+                },
+                leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
                 title: Text(
-                  transaction.category,
+                  indexedTransaction.category,
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                subtitle: Text(
-                  transaction.type == TransactionType.expense ? 'Expense' : 'Income',
-                ),
-                trailing: Text(transaction.amount.toStringAsFixed(2)),
+                trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                  fontSize: 15,
+                ),),
               ),
             ),
           );

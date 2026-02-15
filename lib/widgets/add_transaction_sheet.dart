@@ -14,7 +14,7 @@ class AddTransactionSheet extends StatelessWidget {
     final header = context.select((AddTransactionProvider p) => p.header);
     final selectedCategory = context.select((AddTransactionProvider p) => p.selectedCategory);
     final type = context.select((AddTransactionProvider p) => p.type);
-    final categoryLabel = context.select((AddTransactionProvider p) => p.category_label);
+    final categoryLabel = context.select((AddTransactionProvider p) => p.categoryLabel);
     final controller = context.read<AddTransactionProvider>().controller;
 
 

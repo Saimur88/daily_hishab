@@ -19,9 +19,13 @@ class ExpenseByCategoryCard extends StatelessWidget {
               children: [
                 Text(
                   "${entry.key} :",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                  ),
                 ),
-                Text(entry.value.toStringAsFixed(2)),
+                Text(entry.value.toStringAsFixed(2),style: TextStyle(
+                  fontSize: 15,
+                ),),
                 Text("BDT"),
               ],
             ),
