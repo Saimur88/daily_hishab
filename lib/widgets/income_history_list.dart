@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/transaction.dart';
+import '../providers/add_transaction_provider.dart';
 import '../providers/transaction_provider.dart';
+import 'add_transaction_sheet.dart';
 
 class IncomeHistoryList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -62,18 +64,44 @@ class IncomeHistoryList extends StatelessWidget {
               indexedTransaction.id,
             );
           },
-          child: Card(
-            elevation: 2,
-            child: ListTile(
-              leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
-              title: Text(
-                indexedTransaction.category,
-                style: TextStyle(fontWeight: FontWeight.w500),
+          child: InkWell(
+            onLongPress: () async {
+              final updatedTransaction = await showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (_) => ChangeNotifierProvider(
+                  create: (_) {
+                    final provider = AddTransactionProvider();
+                    provider.loadFromTransaction(indexedTransaction);
+                    return provider;
+                  },
+                  child: AddTransactionSheet(
+                    existingTransaction: indexedTransaction,
 
+                  ),
+                ),
+              );
+              if (updatedTransaction != null) {
+                context.read<TransactionProvider>().updateTransaction(
+                  updatedTransaction,
+                );
+              }
+            },
+
+
+            child: Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
+                title: Text(
+                  indexedTransaction.category,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+
+                ),
+                trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                  fontSize: 15,
+                ),),
               ),
-              trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
-                fontSize: 15,
-              ),),
             ),
           ),
         );

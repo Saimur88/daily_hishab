@@ -48,16 +48,8 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> deleteTransaction(String id) async {
-    print("Trying to delete id: $id");
-
     await _repository.deleteTransaction(id);
-
-    print("Deleted from Firestore");
-
     _transactions.removeWhere((tx) => tx.id == id);
-
-    print("Removed locally. Remaining: ${_transactions.length}");
-
     notifyListeners();
   }
 

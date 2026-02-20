@@ -63,44 +63,40 @@ class ExpenseHistoryList extends StatelessWidget {
                   indexedTransaction.id,
                 );
             },
-            child: Tooltip(
-              message: 'First Hover',
-              child: InkWell(
-                focusColor: Colors.red,
-                onLongPress: () async {
-                    final updatedTransaction = await showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (_) => ChangeNotifierProvider(
-                        create: (_) {
-                          final provider = AddTransactionProvider();
-                          provider.loadFromTransaction(indexedTransaction);
-                          return provider;
-                        },
-                        child: AddTransactionSheet(
-                          existingTransaction: indexedTransaction,
+            child: InkWell(
+              onLongPress: () async {
+                  final updatedTransaction = await showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (_) => ChangeNotifierProvider(
+                      create: (_) {
+                        final provider = AddTransactionProvider();
+                        provider.loadFromTransaction(indexedTransaction);
+                        return provider;
+                      },
+                      child: AddTransactionSheet(
+                        existingTransaction: indexedTransaction,
 
-                        ),
                       ),
-                    );
-                    if (updatedTransaction != null) {
-                      context.read<TransactionProvider>().updateTransaction(
-                        updatedTransaction,
-                      );
-                    }
-                },
-                child: Card(
-                  elevation: 2,
-                  child: ListTile(
-                    leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
-                    title: Text(
-                      indexedTransaction.category,
-                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
-                      fontSize: 15,
-                    ),),
+                  );
+                  if (updatedTransaction != null) {
+                    context.read<TransactionProvider>().updateTransaction(
+                      updatedTransaction,
+                    );
+                  }
+              },
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
+                  title: Text(
+                    indexedTransaction.category,
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
+                  trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                    fontSize: 15,
+                  ),),
                 ),
               ),
             ),
