@@ -27,13 +27,8 @@ class ExpenseHistoryList extends StatelessWidget {
           final indexedTransaction = expenseTransaction[index];
           return Dismissible(
             key: ValueKey(expenseTransaction[index].id),
-            direction: DismissDirection.horizontal,
-            background: Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(right: 20),
-              color: Colors.red.shade400,
-              child: const Icon(Icons.delete_forever, color: Colors.white),
-            ),
+            direction: DismissDirection.endToStart,
+            background: Container(color:  Colors.transparent,),
             secondaryBackground: Container(
               alignment: Alignment.centerRight,
               padding: EdgeInsets.only(right: 20),
@@ -63,46 +58,50 @@ class ExpenseHistoryList extends StatelessWidget {
                 ),
               );
               },
-            onDismissed: (direction) {
-              if (direction == DismissDirection.endToStart) {
+            onDismissed: (_) {
                 context.read<TransactionProvider>().deleteTransaction(
-                  indexedTransaction,
+                  indexedTransaction.id,
                 );
-              }
             },
-            child: Card(
-              elevation: 2,
-              child: ListTile(
-                onTap: () async {
-                  final updatedTransaction = await showModalBottomSheet(
-                    isScrollControlled: true,
+            child: Tooltip(
+              message: 'First Hover',
+              child: InkWell(
+                focusColor: Colors.red,
+                onLongPress: () async {
+                    final updatedTransaction = await showModalBottomSheet(
+                      isScrollControlled: true,
                       context: context,
                       builder: (_) => ChangeNotifierProvider(
-                          create: (_) {
-                           final provider = AddTransactionProvider();
-                           provider.loadFromTransaction(indexedTransaction);
-                           return provider;
-                          },
-                          child: AddTransactionSheet(
-                            existingTransaction: indexedTransaction,
+                        create: (_) {
+                          final provider = AddTransactionProvider();
+                          provider.loadFromTransaction(indexedTransaction);
+                          return provider;
+                        },
+                        child: AddTransactionSheet(
+                          existingTransaction: indexedTransaction,
 
+                        ),
                       ),
-                      ),
-                  );
-                  if (updatedTransaction != null) {
-                    context.read<TransactionProvider>().updateTransaction(
-                      updatedTransaction,
                     );
-                  }
+                    if (updatedTransaction != null) {
+                      context.read<TransactionProvider>().updateTransaction(
+                        updatedTransaction,
+                      );
+                    }
                 },
-                leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
-                title: Text(
-                  indexedTransaction.category,
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                child: Card(
+                  elevation: 2,
+                  child: ListTile(
+                    leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
+                    title: Text(
+                      indexedTransaction.category,
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                      fontSize: 15,
+                    ),),
+                  ),
                 ),
-                trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
-                  fontSize: 15,
-                ),),
               ),
             ),
           );

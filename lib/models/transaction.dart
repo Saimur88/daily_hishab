@@ -4,12 +4,14 @@ class Transaction {
   final double amount;
   final String category;
   final TransactionType type;
+  final DateTime timestamp;
 
   Transaction({
     required this.id,
     required this.amount,
     required this.category,
     required this.type,
+    required this.timestamp,
   });
 
   @override

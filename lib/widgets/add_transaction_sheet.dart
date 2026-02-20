@@ -115,7 +115,9 @@ class AddTransactionSheet extends StatelessWidget {
                       id: existingTransaction?.id ?? DateTime.now().toIso8601String(),
                       amount: double.parse(controller.text),
                       category: selectedCategory,
-                      type: type)
+                      type: type,
+                    timestamp: DateTime.now(),
+                  )
                   ;
                   Navigator.pop(context, transaction);
                   }, child: Text(header))),
