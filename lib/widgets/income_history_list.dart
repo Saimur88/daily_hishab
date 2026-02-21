@@ -59,8 +59,8 @@ class IncomeHistoryList extends StatelessWidget {
 
             );
           },
-          onDismissed: (_){
-            context.read<TransactionProvider>().deleteTransaction(
+          onDismissed: (_) async {
+            await context.read<TransactionProvider>().deleteTransaction(
               indexedTransaction.id,
             );
           },

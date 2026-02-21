@@ -26,7 +26,7 @@ class ExpenseHistoryList extends StatelessWidget {
         itemBuilder: (context, index) {
           final indexedTransaction = expenseTransaction[index];
           return Dismissible(
-            key: ValueKey(expenseTransaction[index].id),
+            key: ValueKey(indexedTransaction.id),
             direction: DismissDirection.endToStart,
             background: Container(color:  Colors.transparent,),
             secondaryBackground: Container(

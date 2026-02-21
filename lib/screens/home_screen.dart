@@ -50,6 +50,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 20),
             BalanceSummaryCard(
@@ -62,7 +63,6 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text('Expense History', style: TextStyle(fontSize: 20)),
             Expanded(child: ExpenseHistoryList(transactions: transactions)),
-            SizedBox(height: 20),
             Text('Income History', style: TextStyle(fontSize: 20)),
             Expanded(child: IncomeHistoryList(transactions: transactions,))
           ],

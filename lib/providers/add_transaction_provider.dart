@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
+import '../repositories/transaction_repository.dart';
 
 class AddTransactionProvider extends ChangeNotifier{
 
 
   final TextEditingController controller = TextEditingController();
+  final TransactionRepository _repository = TransactionRepository();
 
   bool _isEditing = false;
   bool get isEditing => _isEditing;
@@ -24,6 +26,7 @@ class AddTransactionProvider extends ChangeNotifier{
     _type = tx.type;
     _selectedCategory = tx.category;
     _initialized = true;
+    await _repository.updateTransaction(tx);
     notifyListeners();
   }
 

@@ -24,13 +24,32 @@ class TransactionRepository {
     }).toList();
   }
 
-  Future<void> addTransaction(Transaction transaction) async {
+  Future<Transaction> addTransaction(Transaction transaction) async {
     // Firebase will come here later
-    await _db.add({
+    final docRef = _db.doc();
+    final newTransaction =  Transaction(
+        id: docRef.id,
+        amount: transaction.amount,
+        category: transaction.category,
+        type: transaction.type,
+        timestamp: transaction.timestamp);
+
+    await docRef.set({
+      'amount': newTransaction.amount,
+      'category': newTransaction.category,
+      'type': newTransaction.type == TransactionType.income ? 'income' : 'expense',
+      'timestamp': Timestamp.fromDate(newTransaction.timestamp),
+    });
+    return newTransaction;
+  }
+
+  Future<void> updateTransaction(Transaction transaction) async {
+    // Firebase will come here later
+    await _db.doc(transaction.id).update({
       'amount': transaction.amount,
       'category': transaction.category,
-      'type': transaction.type == TransactionType.income ? 'income' : 'expense',
       'timestamp': Timestamp.fromDate(transaction.timestamp),
+      'type': transaction.type == TransactionType.income ? 'income' : 'expense'
     });
   }
 
