@@ -26,7 +26,7 @@ class TransactionRepository {
 
   Future<Transaction> addTransaction(Transaction transaction) async {
     // Firebase will come here later
-    final docRef = _db.doc();
+    final docRef = _db.doc(); //reserves a new id
     final newTransaction =  Transaction(
         id: docRef.id,
         amount: transaction.amount,

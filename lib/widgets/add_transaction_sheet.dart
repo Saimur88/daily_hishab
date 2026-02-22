@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddTransactionSheet extends StatelessWidget {
-  final Transaction? existingTransaction;
+  final Transaction? existingTransaction; //gets the existing transaction when called to edit the transaction
    const AddTransactionSheet({super.key, this.existingTransaction});
 
   @override
@@ -15,6 +15,7 @@ class AddTransactionSheet extends StatelessWidget {
     final selectedCategory = context.select((AddTransactionProvider p) => p.selectedCategory);
     final type = context.select((AddTransactionProvider p) => p.type);
     final categoryLabel = context.select((AddTransactionProvider p) => p.categoryLabel);
+
     final controller = context.read<AddTransactionProvider>().controller;
 
 
@@ -26,7 +27,6 @@ class AddTransactionSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

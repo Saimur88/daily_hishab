@@ -35,7 +35,6 @@ class TransactionProvider extends ChangeNotifier {
 
   Future<void> addTransaction(Transaction tx) async {
     final createdTransaction = await _repository.addTransaction(tx);
-    await _repository.addTransaction(tx);
     _transactions.insert(0,createdTransaction);
     notifyListeners();
   }
