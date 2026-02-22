@@ -40,6 +40,7 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> updateTransaction (Transaction updatedTX) async {
+    await _repository.updateTransaction(updatedTX);
     final index = _transactions.indexWhere((tx) => tx.id == updatedTX.id);
   if(index == -1) return;
   _transactions[index] = updatedTX;
