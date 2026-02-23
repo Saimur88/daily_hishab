@@ -1,6 +1,7 @@
  import 'package:daily_hishab/models/transaction.dart';
   import 'package:daily_hishab/providers/add_transaction_provider.dart';
   import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
   import 'package:provider/provider.dart';
 
   class AddTransactionSheet extends StatefulWidget {
@@ -14,6 +15,8 @@
 class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
     final _formKey = GlobalKey<FormState>();
+    final _formFieldKey = GlobalKey<FormFieldState<String>>();
+    bool _submitted = false;
 
     @override
     Widget build(BuildContext context) {
@@ -43,7 +46,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                   children: [
                     TextButton(
                         onPressed: (){
-                          context.read<AddTransactionProvider>().addExpenseSheet();
+                          provider.addExpenseSheet();
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            _submitted =false;
+                          });
+                          _formFieldKey.currentState?.reset();
                         },
                         child: Text('Add Expense')
                     ),
@@ -52,8 +60,12 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                     ),),
                     TextButton(
                         onPressed: () {
-                          context.read<AddTransactionProvider>().addIncomeSheet();
+                          provider.addIncomeSheet();
                           FocusScope.of(context).unfocus();
+                          setState(() {
+                            _submitted =false;
+                          });
+                          _formFieldKey.currentState?.reset();
                         },
                         child: Text('Add Income')
                     )
@@ -82,6 +94,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20,right: 20),
                   child: TextFormField(
+                    key: _formFieldKey,
                     validator: (value){
                       final raw = value?.trim() ?? '';
                       if(raw.isEmpty) return 'Please enter an amount';
@@ -91,7 +104,11 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                       }
                       return null;
                     },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+                    ],
+                    autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+
                     controller: controller,
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
                     decoration: InputDecoration(
@@ -116,27 +133,42 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20,right: 20),
-                  child: DropdownButtonFormField(
+                  child: DropdownButtonFormField<String>(
                     initialValue: selectedCategory,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         )
                     ),
-                    items: provider.categories.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList(),
+                    items: provider.categories
+                        .map((e) => DropdownMenuItem<String>(value: e,child: Text(e)))
+                        .toList(),
                     borderRadius: BorderRadius.circular(20),
                     onChanged: (newValue){
-                        provider.changeSelected(newValue!);
+                      if (newValue == null) return;
+                        provider.changeSelected(newValue);
                     },),
                 ),
                 SizedBox(height: 16,),
                 Center(child: ElevatedButton(
                     onPressed: (){
+                      setState(() {
+                        _submitted =true;
+                      });
                       final ok = _formKey.currentState?.validate() ?? false;
                       if (!ok) return;
+                      final amount = double.tryParse(controller.text.trim());
+                      if (amount == null) {
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.hideCurrentSnackBar();
+                        messenger.showSnackBar(const SnackBar(content: Text('Invalid amount'))
+                        );
+                        return;
+
+                      }
                       final transaction = Transaction(
                           id: widget.existingTransaction?.id ?? '',
-                          amount: double.parse(controller.text.trim()),
+                          amount: amount,
                           category: selectedCategory,
                           type: type,
                         timestamp: DateTime.now(),

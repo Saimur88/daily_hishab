@@ -17,10 +17,6 @@
     void setEditing(bool value) {
       _isEditing = value;
     }
-  Future<void> errorText() async {
-      _errorMessage = "Something went wrong";
-      notifyListeners();
-  }
 
 
     bool _initialized = false;
@@ -49,9 +45,9 @@
     TransactionType _type = TransactionType.expense;
     String _selectedCategory = "Shopping";
 
-    void setType (TransactionType type ) async {
+    void setType (TransactionType type ){
       _type = type;
-      _selectedCategory = categories.first;
+      _ensureValidCategory();
       notifyListeners();
     }
 
@@ -87,6 +83,14 @@
       _selectedCategory = _incomeCategories.first;
       if(!_isEditing)controller.clear();
       notifyListeners();
+    }
+    void _ensureValidCategory(){
+      final list = categories;
+      if(list.isEmpty) return;
+      if(!list.contains(_selectedCategory)){
+        _selectedCategory = list.first;
+
+      }
     }
 
   }
