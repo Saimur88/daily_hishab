@@ -7,6 +7,7 @@ import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
 import '../widgets/expense_by_category_card.dart';
 import '../widgets/expense_history_list.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,13 +27,20 @@ class HomeScreen extends StatelessWidget {
             isScrollControlled: true,
             context: context,
             builder: (_) {
-              return ChangeNotifierProvider(create: (_) => AddTransactionProvider(),
+              return ChangeNotifierProvider(
+                create: (_) => AddTransactionProvider(),
               child: const AddTransactionSheet(),
               );
             },
           );
           if (result != null) {
-            provider.addTransaction(result);
+            await provider.addTransaction(result);
+            final error = provider.errorMessage;
+            if(error != null){
+              final messenger = ScaffoldMessenger.of(context);
+              messenger.hideCurrentSnackBar();
+              messenger.showSnackBar(SnackBar(content: Text(error)));
+            }
           }
         },
         child: Icon(Icons.add),
@@ -49,23 +57,46 @@ class HomeScreen extends StatelessWidget {
         title: Text("Daily Hishab"),
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 20),
-            BalanceSummaryCard(
-              balance: transactionProvider.balance,
-              totalExpense: transactionProvider.totalExpense,
-            ),
-            SizedBox(height: 20),
-            Text('Expense By Category', style: TextStyle(fontSize: 20)),
-            ExpenseByCategoryCard(categoryMap: categoryMap),
-            SizedBox(height: 20),
-            Text('Expense History', style: TextStyle(fontSize: 20)),
-            Expanded(child: ExpenseHistoryList(transactions: transactions)),
-            Text('Income History', style: TextStyle(fontSize: 20)),
-            Expanded(child: IncomeHistoryList(transactions: transactions,))
-          ],
+        child: Builder(
+          builder: (_) {
+            if(transactionProvider.isFetching){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final error = transactionProvider.errorMessage;
+            if (error != null) {
+              return Center(
+                child: Column(
+                  children: [
+                    Text(error),
+                    const SizedBox(height: 16,),
+                    ElevatedButton(
+                        onPressed: transactionProvider.loadTransactions,
+                        child: Text('Retry'))
+                  ],
+                ),
+              );
+            }
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20),
+                BalanceSummaryCard(
+                  balance: transactionProvider.balance,
+                  totalExpense: transactionProvider.totalExpense,
+                ),
+                SizedBox(height: 20),
+                Text('Expense By Category', style: TextStyle(fontSize: 20)),
+                ExpenseByCategoryCard(categoryMap: categoryMap),
+                SizedBox(height: 20),
+                Text('Expense History', style: TextStyle(fontSize: 20)),
+                Expanded(child: ExpenseHistoryList(transactions: transactions)),
+                Text('Income History', style: TextStyle(fontSize: 20)),
+                Expanded(child: IncomeHistoryList(transactions: transactions,))
+              ],
+            );
+          }
         ),
       ),
     );

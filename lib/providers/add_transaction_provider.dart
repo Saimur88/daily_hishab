@@ -10,9 +10,6 @@
 
     bool _isEditing = false;
     bool get isEditing => _isEditing;
-    String? _errorMessage;
-
-    String? get errorMessage => _errorMessage;
 
     void setEditing(bool value) {
       _isEditing = value;

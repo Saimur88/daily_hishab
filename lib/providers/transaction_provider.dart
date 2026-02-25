@@ -9,10 +9,12 @@ class TransactionProvider extends ChangeNotifier {
 
 
   final TransactionRepository _repository = TransactionRepository();
-  bool _isLoading = false;
+  bool _isFetching = false;
+  bool _isMutating = false;
+  bool get isMutating => _isMutating;
   String? _errorMessage;
 
-  bool get isLoading => _isLoading;
+  bool get isFetching => _isFetching;
   String? get errorMessage => _errorMessage;
 
   List<Transaction> get transactions => _transactions;
@@ -22,36 +24,84 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<void> loadTransactions() async {
-    _isLoading = true;
+    _isFetching = true;
+    _errorMessage = null;
+    notifyListeners();
 
+    try{
       final fetchedTransactions = await _repository.fetchTransactions();
       _transactions //Cascade operator
         ..clear() //cant do _transactions = fetchedTransactions bu .clear() can be done
         ..addAll(fetchedTransactions);
-      _isLoading = false;
+    } catch (e){
+      _errorMessage = e.toString();
+    }finally{
+      _isFetching = false;
       notifyListeners();
+    }
+
+
+
 
   }
 
   Future<void> addTransaction(Transaction tx) async {
-    final createdTransaction = await _repository.addTransaction(tx);
-    _transactions.insert(0,createdTransaction);
+    _isMutating = true;
+    _errorMessage = null;
     notifyListeners();
+    try{
+      final createdTransaction = await _repository.addTransaction(tx);
+      _transactions.insert(0,createdTransaction);
+    } catch(e){
+      _errorMessage = e.toString();
+    }finally{
+      _isMutating = false;
+      notifyListeners();
+    }
   }
 
   Future<void> updateTransaction (Transaction updatedTX) async {
-    await _repository.updateTransaction(updatedTX);
-    final index = _transactions.indexWhere((tx) => tx.id == updatedTX.id);
-  if(index == -1) return;
-  _transactions[index] = updatedTX;
-  notifyListeners();
-
+    _isMutating = true;
+    _errorMessage = null;
+    notifyListeners();
+    try{
+      await _repository.updateTransaction(updatedTX);
+      final index = _transactions.indexWhere((tx) => tx.id == updatedTX.id);
+      if(index == -1) return;
+      _transactions[index] = updatedTX;
+    }catch (e){
+      _errorMessage = e.toString();
+    }finally{
+      _isMutating = false;
+      notifyListeners();
+    }
   }
 
   Future<void> deleteTransaction(String id) async {
-    await _repository.deleteTransaction(id);
-    _transactions.removeWhere((tx) => tx.id == id);
+    _isMutating = true;
+    _errorMessage = null;
     notifyListeners();
+
+    final index = _transactions.indexWhere((tx) => tx.id == id);
+    if(index == -1) {
+      _isMutating = false;
+      notifyListeners();
+      return;
+    }
+
+    final removed = _transactions.removeAt(index);
+    notifyListeners();
+
+
+    try{
+      await _repository.deleteTransaction(id);
+    }catch (e) {
+      _transactions.insert(index, removed);
+      _errorMessage = e.toString();
+    }finally{
+      _isMutating = false;
+      notifyListeners();
+    }
   }
 
 
