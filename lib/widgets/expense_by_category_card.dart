@@ -1,3 +1,4 @@
+import 'package:daily_hishab/core/formatters/formatters.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseByCategoryCard extends StatelessWidget {
@@ -23,10 +24,9 @@ class ExpenseByCategoryCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(entry.value.toStringAsFixed(2),style: TextStyle(
+                Text(AppFormattrers.formatCurrency(entry.value),style: TextStyle(
                   fontSize: 15,
                 ),),
-                Text("BDT"),
               ],
             ),
           );

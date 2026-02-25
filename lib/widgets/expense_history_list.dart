@@ -1,7 +1,9 @@
+import 'package:daily_hishab/core/formatters/formatters.dart';
 import 'package:daily_hishab/models/transaction.dart';
 import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/add_transaction_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
 
@@ -44,13 +46,13 @@ class ExpenseHistoryList extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(false);
+                        context.pop(false);
                       },
                       child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(true);
+                        (context).pop(true);
                       },
                       child: const Text('Delete'),
                     ),
@@ -58,8 +60,8 @@ class ExpenseHistoryList extends StatelessWidget {
                 ),
               );
               },
-            onDismissed: (_) {
-                context.read<TransactionProvider>().deleteTransaction(
+            onDismissed: (_) async {
+                await context.read<TransactionProvider>().deleteTransaction(
                   indexedTransaction.id,
                 );
             },
@@ -94,9 +96,10 @@ class ExpenseHistoryList extends StatelessWidget {
                     indexedTransaction.category,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                  trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.amount),style: TextStyle(
                     fontSize: 15,
                   ),),
+                  subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:daily_hishab/core/formatters/formatters.dart';
 import 'package:flutter/material.dart';
 
 class BalanceSummaryCard extends StatelessWidget {
@@ -32,18 +33,17 @@ class BalanceSummaryCard extends StatelessWidget {
               ],
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               spacing: 20,
               children: [
-                Text(balance.toStringAsFixed(2),style: TextStyle(
+                Text('\t${AppFormattrers.formatCurrency(balance)}',style: TextStyle(
                   fontSize: 15,
                 ),),
-                Text(totalExpense.toStringAsFixed(2),style: TextStyle(
+                Text('\t${AppFormattrers.formatCurrency(totalExpense)}',style: TextStyle(
                   fontSize: 15,
                 ),),
               ],
             ),
-            Column(spacing: 20, children: [Text('BDT'), Text('BDT')]),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
+import 'package:daily_hishab/core/formatters/formatters.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../models/transaction.dart';
 import '../providers/add_transaction_provider.dart';
@@ -44,7 +46,7 @@ class IncomeHistoryList extends StatelessWidget {
                   actions: [
                     TextButton(
                         onPressed: (){
-                          Navigator.of(context).pop(false);
+                          context.pop(false);
                         },
                         child: const Text('Cancel')),
                     TextButton(
@@ -98,9 +100,10 @@ class IncomeHistoryList extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w500),
 
                 ),
-                trailing: Text(indexedTransaction.amount.toStringAsFixed(2),style: TextStyle(
+                trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.amount),style: TextStyle(
                   fontSize: 15,
                 ),),
+                subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),
               ),
             ),
           ),
