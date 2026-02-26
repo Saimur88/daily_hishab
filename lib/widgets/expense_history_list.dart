@@ -34,7 +34,7 @@ class ExpenseHistoryList extends StatelessWidget {
             secondaryBackground: Container(
               alignment: Alignment.centerRight,
               padding: EdgeInsets.only(right: 20),
-              color: Colors.red.shade400,
+              color: Theme.of(context).colorScheme.error,
               child: const Icon(Icons.delete_forever, color: Colors.white),
             ),
             confirmDismiss: (_) async {
@@ -54,7 +54,9 @@ class ExpenseHistoryList extends StatelessWidget {
                       onPressed: () {
                         (context).pop(true);
                       },
-                      child: const Text('Delete'),
+                      child: Text('Delete',style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),),
                     ),
                   ],
                 ),

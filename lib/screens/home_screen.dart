@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
     final categoryMap = transactionProvider.expenseByCategory;
 
     return Scaffold(
-      drawer: Drawer(backgroundColor: Colors.amber),
+      drawer: Drawer(backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await showModalBottomSheet(
@@ -48,11 +48,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           CircleAvatar(
-            backgroundColor: Colors.amber,
+            backgroundColor: Theme.of(context).colorScheme.errorContainer,
             child: Icon(Icons.person_outline),
           ),
         ],
-        backgroundColor: Colors.amber,
+        backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
         centerTitle: true,
         title: Text("Daily Hishab"),
       ),

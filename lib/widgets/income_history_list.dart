@@ -34,7 +34,7 @@ class IncomeHistoryList extends StatelessWidget {
           background: Container(color:  Colors.transparent,),
           secondaryBackground: Container(
             alignment: Alignment.centerRight,
-            color: Colors.red,
+            color: Theme.of(context).colorScheme.error,
             child: const Icon(Icons.delete_forever, color: Colors.white),
           ),
           confirmDismiss: (_) async {
@@ -53,8 +53,8 @@ class IncomeHistoryList extends StatelessWidget {
                         onPressed: (){
                           Navigator.of(context).pop(true);
                         },
-                        child: const Text('Delete',style: TextStyle(
-                          color: Colors.red,
+                        child: Text('Delete',style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
                         ),)),
                   ],
                 ),

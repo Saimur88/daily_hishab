@@ -74,7 +74,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                 Divider(
                   indent: 20,
                   endIndent: 20,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 Center(
                   child: Text( header ,style: TextStyle(
