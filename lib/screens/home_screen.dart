@@ -1,5 +1,6 @@
 import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/balance_summary_card.dart';
+import 'package:daily_hishab/widgets/connectivity_banner.dart';
 import 'package:daily_hishab/widgets/income_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,6 @@ import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
 import '../widgets/expense_by_category_card.dart';
 import '../widgets/expense_history_list.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -56,48 +56,63 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         title: Text("Daily Hishab"),
       ),
-      body: SafeArea(
-        child: Builder(
-          builder: (_) {
-            if(transactionProvider.isFetching){
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final error = transactionProvider.errorMessage;
-            if (error != null) {
-              return Center(
-                child: Column(
-                  children: [
-                    Text(error),
-                    const SizedBox(height: 16,),
-                    ElevatedButton(
-                        onPressed: transactionProvider.loadTransactions,
-                        child: Text('Retry'))
-                  ],
-                ),
-              );
-            }
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 20),
-                BalanceSummaryCard(
-                  balance: transactionProvider.balance,
-                  totalExpense: transactionProvider.totalExpense,
-                ),
-                SizedBox(height: 20),
-                Text('Expense By Category', style: TextStyle(fontSize: 20)),
-                ExpenseByCategoryCard(categoryMap: categoryMap),
-                SizedBox(height: 20),
-                Text('Expense History', style: TextStyle(fontSize: 20)),
-                Expanded(child: ExpenseHistoryList(transactions: transactions)),
-                Text('Income History', style: TextStyle(fontSize: 20)),
-                Expanded(child: IncomeHistoryList(transactions: transactions,))
-              ],
-            );
-          }
-        ),
+      body: Column(
+        children: [
+          const ConnectivityBanner(),
+          Expanded(
+            child: SafeArea(
+              child: Builder(
+                builder: (_) {
+                  if(transactionProvider.isFetching){
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    );
+                  }
+                  final error = transactionProvider.errorMessage;
+                  if (error != null) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(error),
+                            const SizedBox(height: 16,),
+                            ElevatedButton(
+                                onPressed: provider.loadTransactions,
+                                child: Text('Retry'))
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 20),
+                      BalanceSummaryCard(
+                        balance: transactionProvider.balance,
+                        totalExpense: transactionProvider.totalExpense,
+                      ),
+                      SizedBox(height: 20),
+                      Text('Expense By Category', style: TextStyle(fontSize: 20)),
+                      ExpenseByCategoryCard(categoryMap: categoryMap),
+                      SizedBox(height: 20),
+                      Text('Expense History', style: TextStyle(fontSize: 20)),
+                      Expanded(child: ExpenseHistoryList(transactions: transactions)),
+                      Text('Income History', style: TextStyle(fontSize: 20)),
+                      Expanded(child: IncomeHistoryList(transactions: transactions,))
+                    ],
+                  );
+                }
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
