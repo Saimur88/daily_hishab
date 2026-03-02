@@ -1,11 +1,11 @@
+import 'package:daily_hishab/screens/auth/auth_gate.dart';
 import 'package:go_router/go_router.dart';
-import '../../screens/home_screen.dart';
 
 final appRouter = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
-        name: 'home',
+        name: 'root',
         path: '/',
-        builder: (context, state) => const HomeScreen(),)
+        builder: (context, state) => const AuthGate(),)
     ] );
