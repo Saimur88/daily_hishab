@@ -2,6 +2,7 @@ import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/balance_summary_card.dart';
 import 'package:daily_hishab/widgets/connectivity_banner.dart';
 import 'package:daily_hishab/widgets/income_history_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
@@ -20,7 +21,8 @@ class HomeScreen extends StatelessWidget {
     final categoryMap = transactionProvider.expenseByCategory;
 
     return Scaffold(
-      drawer: Drawer(backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),),
+      drawer: Drawer(
+        backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await showModalBottomSheet(
@@ -51,6 +53,10 @@ class HomeScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.errorContainer,
             child: Icon(Icons.person_outline),
           ),
+          IconButton(onPressed: (){
+            FirebaseAuth.instance.signOut();
+          },
+              icon: Icon(Icons.logout))
         ],
         backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
         centerTitle: true,
