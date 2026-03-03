@@ -41,35 +41,40 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextButton(
-                        onPressed: (){
-                          provider.addExpenseSheet();
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            _submitted =false;
-                          });
-                          _formFieldKey.currentState?.reset();
-                        },
-                        child: Text('Add Expense')
-                    ),
-                    Text("|",style: TextStyle(
-                      fontSize: 30,
-                    ),),
-                    TextButton(
-                        onPressed: () {
-                          provider.addIncomeSheet();
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            _submitted =false;
-                          });
-                          _formFieldKey.currentState?.reset();
-                        },
-                        child: Text('Add Income')
-                    )
-                  ],
+                SizedBox(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                          onPressed: (){
+                            provider.addExpenseSheet();
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              _submitted =false;
+                            });
+                            _formFieldKey.currentState?.reset();
+                          },
+                          child: Text('Add Expense')
+                      ),
+                      VerticalDivider(
+                        indent: 10,
+                        thickness: 1,
+                        color: Colors.black
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            provider.addIncomeSheet();
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              _submitted =false;
+                            });
+                            _formFieldKey.currentState?.reset();
+                          },
+                          child: Text('Add Income')
+                      )
+                    ],
+                  ),
                 ),
                 Divider(
                   indent: 20,

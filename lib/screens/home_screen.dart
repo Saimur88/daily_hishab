@@ -105,12 +105,70 @@ class HomeScreen extends StatelessWidget {
                         totalExpense: transactionProvider.totalExpense,
                       ),
                       SizedBox(height: 20),
-                      Text('Expense By Category', style: TextStyle(fontSize: 20)),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                          elevation: 2,
+                          color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
+                          child: SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: Center(
+                              child: Text('Expense By Category',
+                                  style: TextStyle(
+
+                                fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).canvasColor,
+                                  fontSize: 20),
+                              ),
+                            ),
+                          ),
+                      ),
                       ExpenseByCategoryCard(categoryMap: categoryMap),
                       SizedBox(height: 20),
-                      Text('Expense History', style: TextStyle(fontSize: 20)),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 2,
+                        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
+                        child: SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: Center(
+                            child: Text('Expense History',
+                              style: TextStyle(
+
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).canvasColor,
+                                  fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ),
                       Expanded(child: ExpenseHistoryList(transactions: transactions)),
-                      Text('Income History', style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 10,),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 2,
+                        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
+                        child: SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: Center(
+                            child: Text('Income History',
+                              style: TextStyle(
+
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).canvasColor,
+                                  fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ),
                       Expanded(child: IncomeHistoryList(transactions: transactions,))
                     ],
                   );
