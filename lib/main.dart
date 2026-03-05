@@ -14,11 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await authService.initialize();
 
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TransactionProvider()),
-      ],
-      child: MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

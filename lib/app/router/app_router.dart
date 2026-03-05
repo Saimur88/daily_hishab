@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:daily_hishab/providers/transaction_provider.dart';
 import 'package:daily_hishab/screens/auth/login_screen.dart';
 import 'package:daily_hishab/screens/auth/signup_screen.dart';
 import 'package:daily_hishab/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 /// Forces GoRouter to re-run `redirect` whenever FirebaseAuth emits a new state.
 /// Without this, redirect won't trigger immediately after login/logout (you'll
@@ -67,7 +69,9 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => TransactionProvider(),
+          child: const HomeScreen()),
     ),
   ],
 );
