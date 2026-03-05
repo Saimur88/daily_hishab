@@ -1,15 +1,13 @@
 import 'package:daily_hishab/screens/auth/login_screen.dart';
-import 'package:daily_hishab/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:daily_hishab/main.dart';
+import 'package:go_router/go_router.dart';
 
 
 final _email = TextEditingController();
 final _password = TextEditingController();
 
-// Future<user?> signInWithGoogle() async {
-//
-// }
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -89,9 +87,21 @@ class SignupScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Image.asset('assets/images/google.png',height: 40,),
-                            onPressed: ()async{
-                              await AuthService().signInWithGoogle();
-                            },),
+                            onPressed:() async {
+                              try {
+                                await authService.signInWithGoogle();
+                                if (!context.mounted) return;
+                              } catch (e, st) {
+                                debugPrint('Google sign-in failed: $e');
+                                debugPrintStack(stackTrace: st);
+
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Google sign-in failed: $e')),
+                                );
+                              }
+                            },
+                          ),
                           IconButton(
                             icon: Image.asset('assets/images/facebook.png',height: 40,),
                             onPressed: (){},),
@@ -103,11 +113,7 @@ class SignupScreen extends StatelessWidget {
                           const Text("Already have an account"),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const LoginScreen(),
-                                ),
-                              );
+                             context.go('/login');
                             },
                             child: const Text('Log In!'),
                           ),

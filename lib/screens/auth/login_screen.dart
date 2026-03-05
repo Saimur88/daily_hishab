@@ -1,6 +1,8 @@
 import 'package:daily_hishab/screens/auth/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:daily_hishab/main.dart';
+import 'package:go_router/go_router.dart';
 
 final _email = TextEditingController();
 final _password = TextEditingController();
@@ -90,7 +92,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         IconButton(
                           icon: Image.asset('assets/images/google.png',height: 40,),
-                          onPressed: (){},),
+                          onPressed: () async {
+                            try {
+                              await authService.signInWithGoogle();
+                            } catch (e, st) {
+                              debugPrint('Google sign-in failed: $e');
+                              debugPrintStack(stackTrace: st);
+
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Google sign-in failed: $e')),
+                              );
+                            }
+                          },),
                         IconButton(
                           icon: Image.asset('assets/images/facebook.png',height: 40,),
                           onPressed: (){},),
@@ -102,10 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Text("Don't Have an Account"),
                         TextButton(
                             onPressed: (){
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => const SignupScreen()
-                                  ));
+                              context.go('/signup');
                             },
                             child: const Text('Sign Up!')),
 
