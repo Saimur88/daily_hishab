@@ -1,9 +1,15 @@
 import 'package:daily_hishab/screens/auth/login_screen.dart';
+import 'package:daily_hishab/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
 final _email = TextEditingController();
 final _password = TextEditingController();
+
+// Future<user?> signInWithGoogle() async {
+//
+// }
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -83,7 +89,9 @@ class SignupScreen extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Image.asset('assets/images/google.png',height: 40,),
-                            onPressed: (){},),
+                            onPressed: ()async{
+                              await AuthService().signInWithGoogle();
+                            },),
                           IconButton(
                             icon: Image.asset('assets/images/facebook.png',height: 40,),
                             onPressed: (){},),
