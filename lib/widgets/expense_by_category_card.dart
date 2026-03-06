@@ -8,6 +8,7 @@ class ExpenseByCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     return categoryMap.isEmpty
         ? Center(child: Text("No expenses yet.\nYour Categories will appear here",textAlign: TextAlign.center,))
         : Card(
@@ -26,6 +27,8 @@ class ExpenseByCategoryCard extends StatelessWidget {
                 ),
                 Text(AppFormattrers.formatCurrency(entry.value),style: TextStyle(
                   fontSize: 15,
+                  color: scheme.error,
+                  fontWeight: FontWeight.bold
                 ),),
               ],
             ),

@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
       ),
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
+
     );
   }
 }

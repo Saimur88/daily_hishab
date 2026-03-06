@@ -59,6 +59,10 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff181818),
+                            minimumSize: Size(200, 40)
+                        ),
                         onPressed: () async {
                           try {
                             await FirebaseAuth.instance
@@ -70,7 +74,10 @@ class SignupScreen extends StatelessWidget {
                             debugPrint(e.toString());
                           }
                         },
-                        child: Text('Sign Up'),
+                        child: Text('Sign Up',style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),),
                       ),
                       const SizedBox(height: 20),
 
@@ -99,26 +106,36 @@ class SignupScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: Image.asset('assets/images/google.png',height: 40,),
-                            onPressed:() async {
-                              try {
-                                await authService.signInWithGoogle();
-                                if (!context.mounted) return;
-                              } catch (e, st) {
-                                debugPrint('Google sign-in failed: $e');
-                                debugPrintStack(stackTrace: st);
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff181818),
+                              minimumSize: Size(200, 40)
+                            ),
+                              onPressed: () async {
+                                try {
+                                  await authService.signInWithGoogle();
+                                  if (!context.mounted) return;
+                                } catch (e, st) {
+                                  debugPrint('Google sign-in failed: $e');
+                                  debugPrintStack(stackTrace: st);
 
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Google sign-in failed: $e')),
-                                );
-                              }
-                            },
-                          ),
-                          IconButton(
-                            icon: Image.asset('assets/images/facebook.png',height: 40,),
-                            onPressed: (){},),
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Google sign-in failed: $e')),
+                                  );
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset('assets/images/google.png',
+                                    height: 20,),
+                                  const SizedBox(width: 10,),
+                                  const Text('Google',style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),)
+                                ],
+                              )),
                         ],
                       ),
                       Row(

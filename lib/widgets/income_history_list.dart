@@ -109,6 +109,8 @@ class IncomeHistoryList extends StatelessWidget {
                 ),
                 trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.amount),style: TextStyle(
                   fontSize: 15,
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold
                 ),),
                 subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),
               ),

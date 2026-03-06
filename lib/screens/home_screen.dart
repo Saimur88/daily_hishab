@@ -3,13 +3,14 @@ import 'package:daily_hishab/widgets/balance_summary_card.dart';
 import 'package:daily_hishab/widgets/connectivity_banner.dart';
 import 'package:daily_hishab/widgets/income_history_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
 import '../widgets/expense_by_category_card.dart';
 import '../widgets/expense_history_list.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -20,7 +21,13 @@ class HomeScreen extends StatelessWidget {
     final transactions = transactionProvider.transactions;
     final categoryMap = transactionProvider.expenseByCategory;
 
+    const spinkit = SpinKitRotatingCircle(
+      color: Colors.blue,
+      size: 50.0,
+    );
+
     return Scaffold(
+      //bottomNavigationBar: NavigationBar(),
       drawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),),
       floatingActionButton: FloatingActionButton(
@@ -45,7 +52,7 @@ class HomeScreen extends StatelessWidget {
             }
           }
         },
-        child: Icon(Icons.add),
+        child: Icon(Ionicons.add_outline),
       ),
       appBar: AppBar(
         actions: [
@@ -74,9 +81,7 @@ class HomeScreen extends StatelessWidget {
                 builder: (_) {
                   if(transactionProvider.isFetching){
                     return Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
+                      child: spinkit,
                     );
                   }
                   final error = transactionProvider.errorMessage;

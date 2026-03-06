@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 class BalanceSummaryCard extends StatelessWidget {
   final double balance;
   final double totalExpense;
-  const BalanceSummaryCard({
+  late final String _balance = AppFormattrers.formatCurrency(balance);
+  late final String _totalExpense = AppFormattrers.formatCurrency(totalExpense);
+  late final bool isPositive = balance >= 0;
+  late final IconData trendIcon =
+    isPositive ? Icons.trending_up_outlined : Icons.trending_down_outlined;
+   BalanceSummaryCard({
     super.key,
     required this.balance,
     required this.totalExpense,
   });
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color color = isPositive ? Colors.green : scheme.error;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -34,13 +41,23 @@ class BalanceSummaryCard extends StatelessWidget {
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
               spacing: 20,
               children: [
-                Text('\t${AppFormattrers.formatCurrency(balance)}',style: TextStyle(
+                Row(
+                  children: [
+                    Icon(trendIcon,color: color,size: 20,),
+                    Text('\t$_balance',style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),),
+                  ],
+                ),
+                Text('\t$_totalExpense',style: TextStyle(
                   fontSize: 15,
-                ),),
-                Text('\t${AppFormattrers.formatCurrency(totalExpense)}',style: TextStyle(
-                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: scheme.error,
                 ),),
               ],
             ),

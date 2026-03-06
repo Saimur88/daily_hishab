@@ -14,6 +14,7 @@ class ExpenseHistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
     final expenseTransaction = transactions
     .where((t) => t.type == TransactionType.expense)
     .toList();
@@ -39,7 +40,7 @@ class ExpenseHistoryList extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.only(right: 20),
-                color: Theme.of(context).colorScheme.error,
+                color: scheme.error,
                 child: const Icon(Icons.delete_forever, color: Colors.white),
               ),
             ),
@@ -106,6 +107,8 @@ class ExpenseHistoryList extends StatelessWidget {
                   ),
                   trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.amount),style: TextStyle(
                     fontSize: 15,
+                    color: scheme.error,
+                    fontWeight: FontWeight.bold
                   ),),
                   subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),
                 ),
