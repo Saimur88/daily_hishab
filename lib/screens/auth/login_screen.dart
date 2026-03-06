@@ -1,4 +1,3 @@
-import 'package:daily_hishab/screens/auth/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_hishab/main.dart';
@@ -27,29 +26,41 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            height: 400,
+            height: 600,
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Text('Log in to your account',style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300
+                    ),),
+                    const SizedBox(height: 20,),
                     TextFormField(
                       controller: _email,
                       decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
                         labelText: 'Email',
                       ),
                       keyboardType: TextInputType.emailAddress,
                     ),
+                    const SizedBox(height: 20,),
                     TextFormField(
                       controller: _password,
                       decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
                         labelText: 'Password',
                       ),
                       obscureText: true,
 
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 25,),
 
                     ElevatedButton(
                       onPressed: () async {
@@ -80,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Expanded(
                               child: Divider(
-                                thickness: 1,
+                                thickness: 2,
                                 color: Colors.grey[400],
                               )),
                         ],
@@ -107,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },),
                         IconButton(
                           icon: Image.asset('assets/images/facebook.png',height: 40,),
-                          onPressed: (){},),
+                          onPressed: (){},)
                       ],
                     ),
                     Row(

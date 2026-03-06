@@ -1,8 +1,6 @@
-import 'package:daily_hishab/providers/transaction_provider.dart';
 import 'package:daily_hishab/services/auth_service.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app/router/app_router.dart';
 

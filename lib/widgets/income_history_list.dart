@@ -32,10 +32,17 @@ class IncomeHistoryList extends StatelessWidget {
           key: ValueKey(indexedTransaction.id),
           direction: DismissDirection.endToStart,
           background: Container(color:  Colors.transparent,),
-          secondaryBackground: Container(
-            alignment: Alignment.centerRight,
-            color: Theme.of(context).colorScheme.error,
-            child: const Icon(Icons.delete_forever, color: Colors.white),
+          secondaryBackground: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            elevation: 2,
+            child: Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: 20),
+              color: Theme.of(context).colorScheme.error,
+              child: const Icon(Icons.delete_forever, color: Colors.white),
+            ),
           ),
           confirmDismiss: (_) async {
             return await showDialog(

@@ -25,21 +25,35 @@ class SignupScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-              height: 400,
+              height: 600,
               child: Card(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const Text('Sign up to create an account',style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300
+                      ),),
+                      const SizedBox(height: 20),
                       TextFormField(
                         controller: _email,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            labelText: 'Email'),
                         keyboardType: TextInputType.emailAddress,
                       ),
+                      const SizedBox(height: 20),
                       TextFormField(
                         controller: _password,
-                        decoration: const InputDecoration(labelText: 'Password'),
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            labelText: 'Password'),
                         obscureText: true,
                       ),
                       const SizedBox(height: 20),
@@ -75,7 +89,7 @@ class SignupScreen extends StatelessWidget {
                             ),
                             Expanded(
                                 child: Divider(
-                                  thickness: 1,
+                                  thickness: 2,
                                   color: Colors.grey[400],
                                 )),
                           ],

@@ -49,14 +49,17 @@ class HomeScreen extends StatelessWidget {
       ),
       appBar: AppBar(
         actions: [
-          CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.errorContainer,
-            child: Icon(Icons.person_outline),
-          ),
           IconButton(onPressed: (){
             FirebaseAuth.instance.signOut();
           },
-              icon: Icon(Icons.logout))
+              icon: Column(
+                children: [
+                  Icon(Icons.logout),
+                  Text('Logout',style: TextStyle(
+                    fontSize: 10
+                  ),)
+                ],
+              ))
         ],
         backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
         centerTitle: true,
