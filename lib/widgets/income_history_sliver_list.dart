@@ -18,10 +18,12 @@ class IncomeHistorySliverList extends StatelessWidget {
     .toList();
 
     if (incomeTransactions.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text('No Income History \n Add Income To Get Started',
-        textAlign: TextAlign.center,
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text('No Income History \n Add Income To Get Started',
+          textAlign: TextAlign.center,
+          ),
         ),
       );
   } else {
