@@ -1,25 +1,50 @@
+import 'package:daily_hishab/models/transaction.dart';
 import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/connectivity_banner.dart';
+import 'package:daily_hishab/widgets/spending_earning_segment.dart';
 import 'package:daily_hishab/widgets/total_balance_hero_card.dart';
 import 'package:daily_hishab/widgets/tranasction_list.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+import '../core/formatters/formatters.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  DashboardMode _mode = DashboardMode.spending;
+
+
+  bool _hideBalance = false;
   @override
   Widget build(BuildContext context) {
     final transactionProvider = context.watch<TransactionProvider>();
     final provider = context.read<TransactionProvider>();
     final transactions = transactionProvider.transactions;
     final categoryMap = transactionProvider.expenseByCategory;
-    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
+    final balanceText =
+    AppFormattrers.formatCurrency(transactionProvider.balance);
+
+    final filteredTransaction = transactions.where((t){
+      switch(_mode){
+        case DashboardMode.spending:
+        return t.type == TransactionType.expense;
+
+        case DashboardMode.earnings:
+        return t.type == TransactionType.income;
+      }
+    }).toList();
+
 
     const spinkit = SpinKitRotatingCircle(color: Colors.blue, size: 50.0);
 
@@ -30,9 +55,10 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Daily Hishab'),
         actions: [
           TextButton.icon(
-              onPressed: (){},
-              icon: Icon(Icons.keyboard_arrow_down_outlined),
-              label: Text('March 2026'))
+            onPressed: () {},
+            icon: Icon(Icons.keyboard_arrow_down_outlined),
+            label: Text('March 2026'),
+          ),
         ],
       ),
       backgroundColor: scheme.inversePrimary,
@@ -97,14 +123,26 @@ class HomeScreen extends StatelessWidget {
                       const SliverToBoxAdapter(child: SizedBox(height: 16)),
                       SliverPadding(
                         padding: const EdgeInsets.all(16),
-                        sliver: SliverToBoxAdapter(child: TotalBalanceHeroCard(amount: transactionProvider.balance,),),
+                        sliver: SliverToBoxAdapter(
+                          child: TotalBalanceHeroCard(
+                            amountText: balanceText,
+                            isHidden: _hideBalance,
+                            onToggleHidden: () => setState(()=> _hideBalance = !_hideBalance),
+                          ),
+                        ),
+                      ),
+                      SliverPadding(
+                          padding:EdgeInsets.all(16),
+                        sliver: SliverToBoxAdapter(child: SpendingEarningsSegmented(
+                            value: _mode,
+                            onChanged: (next) => setState(() => _mode = next),
+                        ),),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 16)),
                       SliverPadding(
-                          padding: const EdgeInsetsGeometry.all(16),
-                          sliver: TransactionList(transactions: transactions),
-                      )
-
+                        padding: const EdgeInsetsGeometry.all(16),
+                        sliver: TransactionList(transactions: filteredTransaction),
+                      ),
                     ],
                   );
                 },

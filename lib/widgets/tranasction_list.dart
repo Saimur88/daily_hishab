@@ -12,6 +12,8 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   const TransactionList({required this.transactions, super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
@@ -106,9 +108,9 @@ class TransactionList extends StatelessWidget {
                     indexedTransaction.category,
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.amount),style: TextStyle(
+                  trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.type == TransactionType.income? indexedTransaction.amount : -indexedTransaction.amount),style: TextStyle(
                       fontSize: 15,
-                      color: scheme.error,
+                      color: indexedTransaction.type == TransactionType.income ? scheme.secondary : scheme.error,
                       fontWeight: FontWeight.bold
                   ),),
                   subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),

@@ -1,33 +1,28 @@
-import 'package:daily_hishab/core/formatters/formatters.dart';
 import 'package:flutter/material.dart';
 
-class TotalBalanceHeroCard extends StatefulWidget {
+class TotalBalanceHeroCard extends StatelessWidget {
   const TotalBalanceHeroCard({
     super.key,
-    required this.amount,
+    required this.amountText,
+    required this.isHidden,
+    required this.onToggleHidden,
     this.backgroundColor,
   });
 
-  final double amount;
+  final String amountText;
+  final bool isHidden;
+  final VoidCallback onToggleHidden;
   final Color? backgroundColor;
-
-  @override
-  State<TotalBalanceHeroCard> createState() => _TotalBalanceHeroCardState();
-}
-
-class _TotalBalanceHeroCardState extends State<TotalBalanceHeroCard> {
-  bool isHidden = false;
-
-  void _toggleHidden() => setState(() => isHidden = !isHidden);
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final amountText = AppFormattrers.formatCurrency(widget.amount);
 
     return Card(
-      color: widget.backgroundColor ?? scheme.primaryContainer,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
+      color: backgroundColor ?? scheme.primaryContainer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(26),
+      ),
       elevation: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
@@ -56,7 +51,7 @@ class _TotalBalanceHeroCardState extends State<TotalBalanceHeroCard> {
             ),
             const Spacer(),
             IconButton(
-              onPressed: _toggleHidden,
+              onPressed: onToggleHidden,
               icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility),
               color: Colors.black87,
             ),
