@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
 
 
-class ExpenseHistoryList extends StatelessWidget {
+class ExpenseHistorySliverList extends StatelessWidget {
   final List<Transaction> transactions;
-  const ExpenseHistoryList({required this.transactions, super.key});
+  const ExpenseHistorySliverList({required this.transactions, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,16 @@ class ExpenseHistoryList extends StatelessWidget {
     .where((t) => t.type == TransactionType.expense)
     .toList();
     if (expenseTransaction.isEmpty) {
-      return Text(
-        "No expenses yet. \nAdd your first one to get started",
-        textAlign: TextAlign.center,
+      return SliverToBoxAdapter(
+        child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+                "No expenses yet. \nAdd your first one to get started",
+                textAlign: TextAlign.center,
+              ),),
       );
     } else {
-      return ListView.builder(
+      return SliverList.builder(
         itemCount: expenseTransaction.length,
         itemBuilder: (context, index) {
           final indexedTransaction = expenseTransaction[index];

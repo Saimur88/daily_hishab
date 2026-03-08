@@ -19,6 +19,7 @@ class BalanceSummaryCard extends StatelessWidget {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final Color color = isPositive ? Colors.green : scheme.error;
     return Card(
+      color: scheme.surfaceContainerHighest,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(

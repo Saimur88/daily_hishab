@@ -7,9 +7,9 @@ import '../providers/add_transaction_provider.dart';
 import '../providers/transaction_provider.dart';
 import 'add_transaction_sheet.dart';
 
-class IncomeHistoryList extends StatelessWidget {
+class IncomeHistorySliverList extends StatelessWidget {
   final List<Transaction> transactions;
-  const IncomeHistoryList({required this.transactions,super.key});
+  const IncomeHistorySliverList({required this.transactions,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,14 @@ class IncomeHistoryList extends StatelessWidget {
     .toList();
 
     if (incomeTransactions.isEmpty) {
-      return const Center(
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Text('No Income History \n Add Income To Get Started',
         textAlign: TextAlign.center,
         ),
       );
   } else {
-      return ListView.builder(
+      return SliverList.builder(
       itemCount: incomeTransactions.length,
         itemBuilder:(context, index){
         final indexedTransaction = incomeTransactions[index];

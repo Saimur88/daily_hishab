@@ -22,8 +22,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: FlexThemeData.light(
-        scheme: FlexScheme.blue,
-        useMaterial3: true,
+        colors: const FlexSchemeColor(
+          primary: Color(0xFF1A237E), // Deep Indigo
+          error: Color(0xffef233c),
+          primaryContainer: Color(0xFFC5CAE9), // Light Indigo
+          secondary: Color(0xFF00C853),        // Success/Growth Green
+          secondaryContainer: Color(0xFFB9F6CA),
+          tertiary: Color(0xFFFFAB00),         // Amber for warnings/pending
+          appBarColor: Color(0xFF1A237E),
+        ),
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 20,
         subThemesData: const FlexSubThemesData(
