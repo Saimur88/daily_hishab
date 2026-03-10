@@ -15,55 +15,54 @@ class SpendingEarningsSegmented extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return SegmentedButton<DashboardMode>(
-      segments: const [
-        ButtonSegment(value: DashboardMode.spending, label: Text('Spending')),
-        ButtonSegment(value: DashboardMode.earnings, label: Text('Earnings')),
-      ],
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(999),
+    final radius = BorderRadius.circular(999);
+
+    Widget segment({
+      required DashboardMode mode,
+      required String label,
+    }) {
+      final selected = value == mode;
+      return Expanded(
+        child: Material(
+          color: selected ? scheme.primaryContainer : Colors.transparent,
+          shape: const StadiumBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: () => onChanged(mode),
+            splashColor: scheme.primary.withValues(alpha: 0.10),
+            highlightColor: scheme.primary.withValues(alpha: 0.6),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0,vertical: 22),
+              child: Center(
+                child: Text(label,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+                  color: selected ? scheme.onSurface : scheme.onSurface.withValues(alpha: 0.5),
+                ),),
+              ),
+            ),
           ),
         ),
-      side: const WidgetStatePropertyAll(
-        BorderSide(
-          color: Colors.transparent
-        )
-      ),
-          padding: WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 18,vertical: 12)
+      );
+    }
+
+    return Material(
+      color: Colors.black26,
+      borderRadius: radius,
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+          padding: EdgeInsets.all(6),
+        child: Row(
+          children: [
+            segment(mode: DashboardMode.spending, label: 'Spending'),
+            const SizedBox(width: 6),
+            segment(mode: DashboardMode.earnings, label: 'Earnings'),
+          ],
+        ),
 
       ),
-        backgroundColor: WidgetStateColor.resolveWith(
-            (state){
-              final selected = state.contains(WidgetState.selected);
-              return selected ? scheme.primaryContainer : scheme.surfaceContainerHighest.withValues(alpha: 0.35);
-            }
-        ),
-        foregroundColor: WidgetStateColor.resolveWith(
-            (state) {
-              final selected = state.contains(WidgetState.selected);
-              return selected ? scheme.onPrimaryContainer : scheme.onSurface;
-            }
-        ),
-        textStyle: WidgetStateProperty.resolveWith((state){
-          final selected = state.contains(WidgetState.selected);
-          return Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w500
-          );
-        }
-
-        ),
-        elevation: WidgetStatePropertyAll(0),
-        overlayColor: WidgetStatePropertyAll(
-          scheme.primary.withValues(alpha: 0.08)
-        )
-
-      ),
-      selected: {value},
-      onSelectionChanged: (set) => onChanged(set.first),
-      showSelectedIcon: false,
     );
+
+
   }
 }
