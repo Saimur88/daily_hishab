@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          const ConnectivityBanner(),
           Expanded(
             child: SafeArea(
               child: Builder(
@@ -120,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return CustomScrollView(
                     slivers: [
+                      SliverToBoxAdapter(child: const ConnectivityBanner()),
                       const SliverToBoxAdapter(child: SizedBox(height: 16)),
                       SliverPadding(
                         padding: const EdgeInsets.all(16),

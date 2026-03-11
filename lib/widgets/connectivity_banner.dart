@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ConnectivityBanner extends StatefulWidget {
   const ConnectivityBanner({super.key});
@@ -44,23 +45,19 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
     if (!_offline) return const SizedBox.shrink();
 
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.all(10),
       color: Theme.of(context).colorScheme.error,
-      child: SafeArea(
-        bottom: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Offline",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(width: 5),
-            Icon(Icons.wifi_off, color: Theme.of(context).colorScheme.onError),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Offline",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(width: 5),
+          Image.asset('assets/icons/no_wifi.png',width: 20,height: 20,color: Colors.white,),
+        ],
       ),
     );
   }
