@@ -138,9 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             onChanged: (next) => setState(() => _mode = next),
                         ),),
                       ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 16)),
                       SliverPadding(
-                        padding: const EdgeInsetsGeometry.all(16),
+                        padding: const EdgeInsetsGeometry.symmetric(horizontal: 16),
                         sliver: TransactionList(transactions: filteredTransaction),
                       ),
                     ],
