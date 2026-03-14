@@ -19,7 +19,7 @@ class TotalBalanceHeroCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Card(
-      color: backgroundColor ?? scheme.primaryContainer,
+      color: backgroundColor ?? scheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(26),
       ),
@@ -35,7 +35,7 @@ class TotalBalanceHeroCard extends StatelessWidget {
                 Text(
                   'Total balance',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.black87,
+                    color: scheme.surface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -43,7 +43,7 @@ class TotalBalanceHeroCard extends StatelessWidget {
                 Text(
                   isHidden ? '••••' : amountText,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.black,
+                    color: scheme.surface,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
@@ -53,7 +53,7 @@ class TotalBalanceHeroCard extends StatelessWidget {
             IconButton(
               onPressed: onToggleHidden,
               icon: Icon(isHidden ? Icons.visibility_off : Icons.visibility),
-              color: Colors.black87,
+              color: scheme.surface,
             ),
           ],
         ),

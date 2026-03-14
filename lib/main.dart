@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       theme: FlexThemeData.light(
         colors: const FlexSchemeColor(
-          primary: Color(0xFF1A237E), // Deep Indigo
+          primary: Color(0xFF001845), // Deep Indigo
           error: Color(0xffef233c),
           primaryContainer: Color(0xFFC5CAE9), // Light Indigo
-          secondary: Color(0xFF00C853),        // Success/Growth Green
+          secondary: Color(0xFF2ec4b6),        // Success/Growth Green
           secondaryContainer: Color(0xFFB9F6CA),
           tertiary: Color(0xFFFFAB00),         // Amber for warnings/pending
           appBarColor: Color(0xFF1A237E),

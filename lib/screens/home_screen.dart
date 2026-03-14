@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      backgroundColor: scheme.inversePrimary,
+      backgroundColor: scheme.onInverseSurface,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

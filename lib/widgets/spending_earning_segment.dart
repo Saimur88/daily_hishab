@@ -26,7 +26,7 @@ class SpendingEarningsSegmented extends StatelessWidget {
       final selected = value == mode;
       return Expanded(
         child: Material(
-          color: selected ? scheme.primaryContainer : Colors.transparent,
+          color: selected ? scheme.primary : Colors.transparent,
           shape: const StadiumBorder(),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
@@ -44,7 +44,7 @@ class SpendingEarningsSegmented extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
                     color: selected
-                        ? scheme.onSurface
+                        ? scheme.surface
                         : scheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),

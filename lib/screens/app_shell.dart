@@ -17,8 +17,8 @@ class AppShell extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
-        backgroundColor: Colors.blueGrey,
-        indicatorColor: scheme.primaryContainer,
+        backgroundColor: scheme.primary,
+        indicatorColor: Colors.transparent,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         labelTextStyle: WidgetStateProperty.all(
           TextStyle(
@@ -35,12 +35,15 @@ class AppShell extends StatelessWidget {
         destinations: [
            NavigationDestination(
               icon: Icon(Ionicons.home_outline,size: 25,),
+               selectedIcon: Icon(Ionicons.home_sharp,size: 25,color: scheme.surface,),
                label: 'Home'),
           NavigationDestination(
               icon: Icon(Ionicons.pie_chart_outline,size: 25,),
+              selectedIcon: Icon(Ionicons.pie_chart_sharp,size: 25,color: scheme.surface,),
               label: 'Statistics'),
           NavigationDestination(
               icon: Icon(Ionicons.settings_outline,size: 25,),
+              selectedIcon: Icon(Ionicons.settings_sharp,size: 25,color: scheme.surface,),
               label: 'Settings'),
         ],
 

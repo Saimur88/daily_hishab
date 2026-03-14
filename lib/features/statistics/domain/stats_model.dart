@@ -1,0 +1,1 @@
+enum StatsMode {spending, earnings}

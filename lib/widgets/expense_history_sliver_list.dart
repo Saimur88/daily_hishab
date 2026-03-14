@@ -37,6 +37,7 @@ class ExpenseHistorySliverList extends StatelessWidget {
             direction: DismissDirection.endToStart,
             background: Container(color:  Colors.transparent,),
             secondaryBackground: Card(
+              color: scheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
