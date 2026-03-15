@@ -34,15 +34,15 @@ class AppShell extends StatelessWidget {
         },
         destinations: [
            NavigationDestination(
-              icon: Icon(Ionicons.home_outline,size: 25,),
+              icon: Icon(Ionicons.home_outline,size: 25,color: scheme.surface,),
                selectedIcon: Icon(Ionicons.home_sharp,size: 25,color: scheme.surface,),
                label: 'Home'),
           NavigationDestination(
-              icon: Icon(Ionicons.pie_chart_outline,size: 25,),
+              icon: Icon(Ionicons.pie_chart_outline,size: 25,color: scheme.surface,),
               selectedIcon: Icon(Ionicons.pie_chart_sharp,size: 25,color: scheme.surface,),
               label: 'Statistics'),
           NavigationDestination(
-              icon: Icon(Ionicons.settings_outline,size: 25,),
+              icon: Icon(Ionicons.settings_outline,size: 25,color: scheme.surface,),
               selectedIcon: Icon(Ionicons.settings_sharp,size: 25,color: scheme.surface,),
               label: 'Settings'),
         ],

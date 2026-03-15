@@ -101,19 +101,26 @@ class TransactionList extends StatelessWidget {
                 }
               },
               child: Card(
+                color: scheme.primary,
                 elevation: 2,
                 child: ListTile(
-                  leading: Text('${index + 1}.', style: TextStyle(fontSize: 15)),
+                  leading: Text('${index + 1}.', style: TextStyle(
+                      color: scheme.surface,
+                      fontSize: 15)),
                   title: Text(
                     indexedTransaction.category,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: scheme.surface,
+                        fontWeight: FontWeight.w500),
                   ),
                   trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.type == TransactionType.income? indexedTransaction.amount : -indexedTransaction.amount),style: TextStyle(
                       fontSize: 15,
                       color: indexedTransaction.type == TransactionType.income ? scheme.secondary : scheme.error,
                       fontWeight: FontWeight.bold
                   ),),
-                  subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp)),
+                  subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp),style: TextStyle(
+                    color: scheme.surface,
+                  ),),
                 ),
               ),
             ),
