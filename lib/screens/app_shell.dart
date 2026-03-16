@@ -16,37 +16,43 @@ class AppShell extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: scheme.primary,
-        indicatorColor: Colors.transparent,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        labelTextStyle: WidgetStateProperty.all(
-          TextStyle(
-            fontWeight: FontWeight.bold,
-            color: scheme.onInverseSurface,),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
         ),
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) {
-          navigationShell.goBranch(
-              index,
-            initialLocation: index == navigationShell.currentIndex
-          );
-        },
-        destinations: [
-           NavigationDestination(
-              icon: Icon(Ionicons.home_outline,size: 25,color: scheme.surface,),
-               selectedIcon: Icon(Ionicons.home_sharp,size: 25,color: scheme.surface,),
-               label: 'Home'),
-          NavigationDestination(
-              icon: Icon(Ionicons.pie_chart_outline,size: 25,color: scheme.surface,),
-              selectedIcon: Icon(Ionicons.pie_chart_sharp,size: 25,color: scheme.surface,),
-              label: 'Statistics'),
-          NavigationDestination(
-              icon: Icon(Ionicons.settings_outline,size: 25,color: scheme.surface,),
-              selectedIcon: Icon(Ionicons.settings_sharp,size: 25,color: scheme.surface,),
-              label: 'Settings'),
-        ],
+        child: NavigationBar(
+          backgroundColor: scheme.primary,
+          indicatorColor: Colors.transparent,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          labelTextStyle: WidgetStateProperty.all(
+            TextStyle(
+              fontWeight: FontWeight.bold,
+              color: scheme.onInverseSurface,),
+          ),
+          selectedIndex: navigationShell.currentIndex,
+          onDestinationSelected: (index) {
+            navigationShell.goBranch(
+                index,
+              initialLocation: index == navigationShell.currentIndex
+            );
+          },
+          destinations: [
+             NavigationDestination(
+                icon: Icon(Ionicons.home_outline,size: 25,color: scheme.surface,),
+                 selectedIcon: Icon(Ionicons.home_sharp,size: 25,color: scheme.surface,),
+                 label: 'Home'),
+            NavigationDestination(
+                icon: Icon(Ionicons.pie_chart_outline,size: 25,color: scheme.surface,),
+                selectedIcon: Icon(Ionicons.pie_chart_sharp,size: 25,color: scheme.surface,),
+                label: 'Statistics'),
+            NavigationDestination(
+                icon: Icon(Ionicons.settings_outline,size: 25,color: scheme.surface,),
+                selectedIcon: Icon(Ionicons.settings_sharp,size: 25,color: scheme.surface,),
+                label: 'Settings'),
+          ],
 
+        ),
       ),
     );
   }

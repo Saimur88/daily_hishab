@@ -61,9 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      backgroundColor: scheme.onInverseSurface,
+      backgroundColor: scheme.inversePrimary,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: scheme.primary,
         onPressed: () async {
           final result = await showModalBottomSheet(
             isScrollControlled: true,
