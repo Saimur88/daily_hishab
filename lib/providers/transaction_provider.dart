@@ -139,5 +139,18 @@ class TransactionProvider extends ChangeNotifier {
     return data;
   }
 
+  Map<String, double> get incomeByCategory {
+    final Map<String, double> data = {};
+
+    for (var tx in _transactions) {
+      if (tx.type == TransactionType.income) {
+        data[tx.category] = (data[tx.category] ?? 0) + tx.amount;
+      }
+    }
+
+    return data;
+  }
+
+
 
 }

@@ -27,7 +27,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     final transactionProvider = context.watch<TransactionProvider>();
     final provider = context.read<TransactionProvider>();
     final transactions = transactionProvider.transactions;
-    final categoryMap = transactionProvider.expenseByCategory;
+    final categoryMap =
+        _mode == DashboardMode.spending ?
+        transactionProvider.expenseByCategory
+    : transactionProvider.incomeByCategory
+    ;
     final scheme = Theme.of(context).colorScheme;
     final balanceText =
     AppFormattrers.formatCurrency(transactionProvider.balance);
@@ -135,6 +139,19 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           child: BarChart(
                             BarChartData(
                               barGroups: barGroups,
+                              titlesData: FlTitlesData(
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    getTitlesWidget: (value, meta){
+                                      final index = value.toInt();
+                                      final category = categoryMap.keys.toList()[index];
+                                      if(index >= category.length) return Text('');
+                                      return Text(category);
+                                    }
+                                  )
+                                )
+                              )
                             )
                           ),
                         ),
