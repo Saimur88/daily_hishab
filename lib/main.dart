@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           primary: Color(0xFFffaa82), // Deep Indigo
           error: Color(0xffef233c),
           primaryContainer: Color(0xFFC5CAE9), // Light Indigo
-          secondary: Color(0xFF82d7ff),        // Success/Growth Green
+          secondary: Color(0xFFffdecf),     // Success/Growth Green
           secondaryContainer: Color(0xFFB9F6CA),
           tertiary: Color(0xFFFFAB00),         // Amber for warnings/pending
           appBarColor: Color(0xFF1A237E),

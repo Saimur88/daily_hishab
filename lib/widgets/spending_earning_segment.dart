@@ -64,12 +64,15 @@ class SpendingEarningsSegmented extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: Padding(
             padding: EdgeInsets.all(6),
-            child: Row(
-              children: [
-                segment(mode: DashboardMode.spending, label: 'Spending'),
-                const SizedBox(width: 6),
-                segment(mode: DashboardMode.earnings, label: 'Earnings'),
-              ],
+            child: SizedBox(
+              height: 65,
+              child: Row(
+                children: [
+                  segment(mode: DashboardMode.spending, label: 'Spending'),
+                  const SizedBox(width: 6),
+                  segment(mode: DashboardMode.earnings, label: 'Earnings'),
+                ],
+              ),
             ),
           ),
         ),

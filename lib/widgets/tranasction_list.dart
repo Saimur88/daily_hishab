@@ -101,7 +101,7 @@ class TransactionList extends StatelessWidget {
                 }
               },
               child: Card(
-                color: scheme.inversePrimary,
+                color: scheme.secondary,
                 elevation: 2,
                 child: ListTile(
                   leading: Text('${index + 1}.', style: TextStyle(
@@ -115,7 +115,7 @@ class TransactionList extends StatelessWidget {
                   ),
                   trailing: Text(AppFormattrers.formatCurrency(indexedTransaction.type == TransactionType.income? indexedTransaction.amount : -indexedTransaction.amount),style: TextStyle(
                       fontSize: 15,
-                      color: indexedTransaction.type == TransactionType.income ? scheme.secondary : scheme.error,
+                      color: indexedTransaction.type == TransactionType.income ? Colors.green : scheme.error,
                       fontWeight: FontWeight.bold
                   ),),
                   subtitle: Text(AppFormattrers.formatDateTime(indexedTransaction.timestamp),style: TextStyle(
