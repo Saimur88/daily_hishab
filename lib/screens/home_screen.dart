@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../core/formatters/formatters.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final transactionProvider = context.watch<TransactionProvider>();
     final provider = context.read<TransactionProvider>();
-    final transactions = transactionProvider.transactions;
+    final transactions = transactionProvider.filteredTransactions;
     final categoryMap = transactionProvider.expenseByCategory;
     final scheme = Theme.of(context).colorScheme;
     final balanceText =
@@ -45,6 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }).toList();
 
+    String _monthName(int month){
+      const months =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return months[month-1];
+    }
+
 
     const spinkit = SpinKitRotatingCircle(color: Colors.blue, size: 50.0);
 
@@ -55,9 +61,19 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Daily Hishab'),
         actions: [
           TextButton.icon(
-            onPressed: () {},
+            onPressed: () async {
+              final picked = await showMonthPicker(
+                  context: context,
+                  initialDate: transactionProvider.selectedMonth,
+                  firstDate: DateTime(2020), 
+                  lastDate: DateTime(2030),
+              );
+              if (picked != null) {
+                provider.setMonth(picked);
+              }
+            },
             icon: Icon(Icons.keyboard_arrow_down_outlined),
-            label: Text('March 2026'),
+            label: Text('${_monthName(transactionProvider.selectedMonth.month)} ${transactionProvider.selectedMonth.year}'),
           ),
         ],
       ),

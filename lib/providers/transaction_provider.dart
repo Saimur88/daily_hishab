@@ -22,6 +22,21 @@ class TransactionProvider extends ChangeNotifier {
     loadTransactions();
   }
 
+  DateTime _selectedMonth = DateTime.now();
+  DateTime get selectedMonth => _selectedMonth;
+
+  void setMonth (DateTime month){
+    _selectedMonth = month;
+    notifyListeners();
+  }
+
+  List<Transaction> get filteredTransactions {
+    return _transactions.where((tx){
+      return tx.timestamp.year == _selectedMonth.year &&
+      tx.timestamp.month == _selectedMonth.month;
+    }).toList();
+  }
+
   Future<void> loadTransactions() async {
     _isFetching = true;
     _errorMessage = null;

@@ -46,6 +46,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       }
     }).toList();
 
+    final colors = [
+      Colors.green,
+      Colors.blue,
+      Colors.orange,
+    ];
+
     final barGroups = categoryMap.entries.toList().asMap().entries.map((entry) {
       final index = entry.key;
       final category = entry.value;
@@ -55,7 +61,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         barRods: [
           BarChartRodData(
             toY: category.value,       // amount
-            color: Colors.orange,
+            color: colors[index % colors.length],
             width: 20,
           ),
         ],
@@ -133,26 +139,33 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           onChanged: (next) => setState(() => _mode = next),
                         ),),
                       ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 300,
-                          child: BarChart(
-                            BarChartData(
-                              barGroups: barGroups,
-                              titlesData: FlTitlesData(
-                                bottomTitles: AxisTitles(
-                                  sideTitles: SideTitles(
-                                    showTitles: true,
-                                    getTitlesWidget: (value, meta){
-                                      final index = value.toInt();
-                                      final category = categoryMap.keys.toList()[index];
-                                      if(index >= category.length) return Text('');
-                                      return Text(category);
-                                    }
+                      SliverPadding(
+                        padding: const EdgeInsets.all(16),
+                        sliver: SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 300,
+                            child: BarChart(
+                              BarChartData(
+                                barGroups: barGroups,
+                                gridData: FlGridData(show: false),
+                                borderData: FlBorderData(show: false),
+                                titlesData: FlTitlesData(
+                                  leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      getTitlesWidget: (value, meta){
+                                          final index = value.toInt();
+                                          if (index >= categoryMap.keys.length) return Text('');
+                                          final category = categoryMap.keys.toList()[index];
+                                          return Text(category);
+                                      }
+                                    )
                                   )
                                 )
                               )
-                            )
+                            ),
                           ),
                         ),
                       ),
