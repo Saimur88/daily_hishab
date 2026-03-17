@@ -6,7 +6,7 @@ import 'package:daily_hishab/screens/auth/login_screen.dart';
 import 'package:daily_hishab/screens/auth/signup_screen.dart';
 import 'package:daily_hishab/screens/home_screen.dart';
 import 'package:daily_hishab/screens/settings_screen.dart';
-import 'package:daily_hishab/features/statistics/presentation/statistics_screen.dart';
+import 'package:daily_hishab/screens/statistics_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -73,23 +73,20 @@ final appRouter = GoRouter(
 
     StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return AppShell(navigationShell: navigationShell);
+          return ChangeNotifierProvider(create: (_) => TransactionProvider(),
+          child: AppShell(navigationShell: navigationShell));
         },
         branches: [
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/home',
-              builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => TransactionProvider(),
-                  child: const HomeScreen()),
+              builder: (context, state) => const HomeScreen(),
             ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/statistics',
-              builder: (context, state) => ChangeNotifierProvider(
-                  create: (_) => TransactionProvider(),
-                  child: const StatisticsScreen()),
+              builder: (context, state) => const StatisticsScreen(),
             ),
           ]),
           StatefulShellBranch(routes: [
