@@ -5,33 +5,55 @@ import 'package:daily_hishab/main.dart';
 import 'package:go_router/go_router.dart';
 
 
-final _email = TextEditingController();
-final _password = TextEditingController();
 
-
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+
+
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: const Text('Register'),
-        centerTitle: true,
-      ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 600,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Icon(
+                        Icons.account_balance_wallet,
+                        size: 56,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Daily Hishab',
+                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
                       const Text('Sign up to create an account',style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300
@@ -39,6 +61,15 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _email,
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'Email cannot be empty';
+                          }
+                          if(!value.contains('@')){
+                            return 'Enter a valid email';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -49,6 +80,15 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _password,
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'Password cannot be empty';
+                          }
+                          if(value.length < 6){
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -64,14 +104,16 @@ class SignupScreen extends StatelessWidget {
                             minimumSize: Size(200, 40)
                         ),
                         onPressed: () async {
-                          try {
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                  email: _email.text.trim(),
-                                  password: _password.text,
-                                );
-                          } catch (e) {
-                            debugPrint(e.toString());
+                          if(_formKey.currentState!.validate()) {
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                email: _email.text.trim(),
+                                password: _password.text,
+                              );
+                            } catch (e) {
+                              debugPrint(e.toString());
+                            }
                           }
                         },
                         child: Text('Sign Up',style: TextStyle(

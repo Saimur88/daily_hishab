@@ -4,6 +4,7 @@ import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/add_transaction_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
 
@@ -19,12 +20,23 @@ class TransactionList extends StatelessWidget {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     if (transactions.isEmpty) {
       return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            "No expenses yet. \nAdd your first one to get started",
-            textAlign: TextAlign.center,
-          ),),
+        child: SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Ionicons.newspaper_outline,size: 64,color: Colors.grey,),
+                SizedBox(height: 8,),
+                Text("No expenses yet. \nAdd your first one to get started",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey
+                ),)
+              ],
+            ),
+          ),
+        ),
       );
     } else {
       return SliverList.builder(

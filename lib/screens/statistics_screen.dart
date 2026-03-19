@@ -36,7 +36,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     ;
     final scheme = Theme.of(context).colorScheme;
     final balanceText =
-    AppFormattrers.formatCurrency(categoryMap.isNotEmpty ? transactionProvider.balance : 00.00);
+    AppFormattrers.formatCurrency(transactions.isNotEmpty ? transactionProvider.balance : 00.00);
 
     final filteredTransaction = transactions.where((t){
       switch(_mode){
