@@ -58,6 +58,7 @@
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: _email,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value){
                             if(value == null || value.isEmpty){
                               return 'Email cannot be empty';
@@ -78,12 +79,16 @@
                         const SizedBox(height: 20),
                         TextFormField(
                           controller: _password,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value){
                             if(value == null || value.isEmpty){
                               return 'Password cannot be empty';
                             }
                             if(value.length < 6){
                               return 'Password must be at least 6 characters';
+                            }
+                            if(!value.contains(RegExp(r'[a-zA-Z]')) || !value.contains(RegExp(r'[0-9]'))) {
+                              return 'Password must contain at least one Alphabet & Number';
                             }
                             return null;
                           },
@@ -195,7 +200,7 @@
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Don't Have an Account"),
+                            const Text("Don't Have an Account?"),
                             TextButton(
                               onPressed: () {
                                 context.go('/signup');
