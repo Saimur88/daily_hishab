@@ -145,7 +145,7 @@ class TransactionProvider extends ChangeNotifier {
   Map<String, double> get expenseByCategory {
     final Map<String, double> data = {};
 
-    for (var tx in _transactions) {
+    for (var tx in filteredTransactions) {
       if (tx.type == TransactionType.expense) {
         data[tx.category] = (data[tx.category] ?? 0) + tx.amount;
       }
@@ -157,7 +157,7 @@ class TransactionProvider extends ChangeNotifier {
   Map<String, double> get incomeByCategory {
     final Map<String, double> data = {};
 
-    for (var tx in _transactions) {
+    for (var tx in filteredTransactions) {
       if (tx.type == TransactionType.income) {
         data[tx.category] = (data[tx.category] ?? 0) + tx.amount;
       }

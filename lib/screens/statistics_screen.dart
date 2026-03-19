@@ -1,5 +1,6 @@
 import 'package:daily_hishab/models/transaction.dart';
 import 'package:daily_hishab/widgets/connectivity_banner.dart';
+import 'package:daily_hishab/widgets/main_app_bar.dart';
 import 'package:daily_hishab/widgets/spending_earning_segment.dart';
 import 'package:daily_hishab/widgets/total_balance_hero_card.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../core/formatters/formatters.dart';
 import '../providers/transaction_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
@@ -26,7 +28,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     final transactionProvider = context.watch<TransactionProvider>();
     final provider = context.read<TransactionProvider>();
-    final transactions = transactionProvider.transactions;
+    final transactions = transactionProvider.filteredTransactions;
     final categoryMap =
         _mode == DashboardMode.spending ?
         transactionProvider.expenseByCategory
@@ -34,7 +36,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     ;
     final scheme = Theme.of(context).colorScheme;
     final balanceText =
-    AppFormattrers.formatCurrency(transactionProvider.balance);
+    AppFormattrers.formatCurrency(categoryMap.isNotEmpty ? transactionProvider.balance : 00.00);
 
     final filteredTransaction = transactions.where((t){
       switch(_mode){
@@ -74,18 +76,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     const spinkit = SpinKitRotatingCircle(color: Colors.blue, size: 50.0);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Daily Hishab'),
-        actions: [
-          TextButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.keyboard_arrow_down_outlined),
-            label: Text('March 2026'),
-          ),
-        ],
-      ),
+      appBar: MainAppBar(selectedMonth: transactionProvider.selectedMonth, 
+          onMonthChanged: (picked) => provider.setMonth(picked),),
       backgroundColor: scheme.inversePrimary,
       extendBodyBehindAppBar: true,
       body: Column(
@@ -139,6 +131,25 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           onChanged: (next) => setState(() => _mode = next),
                         ),),
                       ),
+                      if(categoryMap.isEmpty)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 300,
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.bar_chart_outlined,size: 64,color: Colors.grey,),
+                                  SizedBox(height: 8,),
+                                  Text('No Data For This Month',style: TextStyle(
+                                    color: Colors.grey
+                                  ),)
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      else
                       SliverPadding(
                         padding: const EdgeInsets.all(16),
                         sliver: SliverToBoxAdapter(

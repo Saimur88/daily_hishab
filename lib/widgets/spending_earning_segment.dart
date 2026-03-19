@@ -21,6 +21,7 @@ class SpendingEarningsSegmented extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final radius = BorderRadius.circular(999);
     TransactionProvider provider = context.watch<TransactionProvider>();
+    final categoryMap = provider.filteredTransactions;
 
     Widget segment({required DashboardMode mode, required String label}) {
       final selected = value == mode;
@@ -93,8 +94,8 @@ class SpendingEarningsSegmented extends StatelessWidget {
               ),
               Text(
                 selectedMode == DashboardMode.spending
-                    ? AppFormattrers.formatCurrency(context.watch<TransactionProvider>().totalExpense)
-                    : AppFormattrers.formatCurrency(context.watch<TransactionProvider>().totalIncome),
+                    ? categoryMap.isEmpty ? AppFormattrers.formatCurrency(00.00) : AppFormattrers.formatCurrency(context.watch<TransactionProvider>().totalExpense)
+                    : categoryMap.isEmpty ? AppFormattrers.formatCurrency(00.00) : AppFormattrers.formatCurrency(context.watch<TransactionProvider>().totalIncome),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16

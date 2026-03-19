@@ -1,6 +1,7 @@
 import 'package:daily_hishab/models/transaction.dart';
 import 'package:daily_hishab/providers/add_transaction_provider.dart';
 import 'package:daily_hishab/widgets/connectivity_banner.dart';
+import 'package:daily_hishab/widgets/main_app_bar.dart';
 import 'package:daily_hishab/widgets/spending_earning_segment.dart';
 import 'package:daily_hishab/widgets/total_balance_hero_card.dart';
 import 'package:daily_hishab/widgets/tranasction_list.dart';
@@ -11,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../core/formatters/formatters.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/add_transaction_sheet.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final categoryMap = transactionProvider.expenseByCategory;
     final scheme = Theme.of(context).colorScheme;
     final balanceText =
-    AppFormattrers.formatCurrency(transactionProvider.balance);
+    AppFormattrers.formatCurrency(categoryMap.isNotEmpty? transactionProvider.balance : 00.00);
 
     final filteredTransaction = transactions.where((t){
       switch(_mode){
@@ -46,37 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }).toList();
 
-    String _monthName(int month){
-      const months =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      return months[month-1];
-    }
 
 
     const spinkit = SpinKitRotatingCircle(color: Colors.blue, size: 50.0);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Daily Hishab'),
-        actions: [
-          TextButton.icon(
-            onPressed: () async {
-              final picked = await showMonthPicker(
-                  context: context,
-                  initialDate: transactionProvider.selectedMonth,
-                  firstDate: DateTime(2020), 
-                  lastDate: DateTime(2030),
-              );
-              if (picked != null) {
-                provider.setMonth(picked);
-              }
-            },
-            icon: Icon(Icons.keyboard_arrow_down_outlined),
-            label: Text('${_monthName(transactionProvider.selectedMonth.month)} ${transactionProvider.selectedMonth.year}'),
-          ),
-        ],
-      ),
+      appBar: MainAppBar(selectedMonth: transactionProvider.selectedMonth, onMonthChanged: (picked)=> provider.setMonth(picked)),
       backgroundColor: scheme.inversePrimary,
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton(
@@ -140,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SliverToBoxAdapter(child: SizedBox(height: 16)),
                       SliverPadding(
                         padding: const EdgeInsets.all(16),
-                        sliver: SliverToBoxAdapter(
+                        sliver:
+                        SliverToBoxAdapter(
                           child: TotalBalanceHeroCard(
                             amountText: balanceText,
                             isHidden: _hideBalance,
