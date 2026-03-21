@@ -3,14 +3,18 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app/router/app_router.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final AuthService authService = AuthService();
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
   await Firebase.initializeApp();
   await authService.initialize();
+
+  FlutterNativeSplash.remove();
 
   runApp(const MyApp());
 }

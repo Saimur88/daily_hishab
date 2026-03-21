@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
                   ? NetworkImage(user!.photoURL!)
                   : null
               ,
-              child: user!.photoURL == null
+              child: user?.photoURL == null
                   ? const Icon(Icons.person, size: 50)
                   : null
             ,
@@ -36,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall,
           ),
           SizedBox(
-            height: 300,
+            height: 350,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -50,7 +50,39 @@ class SettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
+                        leading: const Icon(Ionicons.contrast_outline,size: 30,color: Colors.grey,),
+                        trailing: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Coming Soon!',
+                            style: TextStyle(color: Colors.orange, fontSize: 12),
+                          ),
+                        ),
+                        title: Text('Theme',
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ),
+                      ListTile(
                         leading: const Icon(Ionicons.language_outline,size: 30,color: Colors.grey,),
+                        trailing: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Coming Soon!',
+                            style: TextStyle(color: Colors.orange, fontSize: 12),
+                          ),
+                        ),
                         title: Text('Change Language',
                           style: TextStyle(
                               color: Colors.grey,
@@ -61,6 +93,17 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       ListTile(
                         leading: const Icon(Ionicons.cash_outline,size: 30,color: Colors.grey,),
+                        trailing: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Coming Soon!',
+                            style: TextStyle(color: Colors.orange, fontSize: 12),
+                          ),
+                        ),
                         title: Text('Currency Unit',
                         style: TextStyle(
                           color: Colors.grey,
@@ -71,6 +114,17 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       ListTile(
                         leading: const Icon(Ionicons.arrow_redo_outline,size: 30,color: Colors.grey,),
+                        trailing: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Coming Soon!',
+                            style: TextStyle(color: Colors.orange, fontSize: 12),
+                          ),
+                        ),
                         title: Text('Share The App',
                           style: TextStyle(
                               color: Colors.grey,
@@ -86,7 +140,23 @@ class SettingsScreen extends StatelessWidget {
                           selectionColor: Colors.grey,
                         ),
                         onTap: ()async{
-                          await FirebaseAuth.instance.signOut();
+                          final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Logout'),
+                                content: const Text('Are you sure you want to logout?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context, false),
+                                      child: const Text('Cancel')),
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context, true),
+                                      child: const Text('Logout'))
+                                ],
+                              ));
+                          if (confirm == true) {
+                            await FirebaseAuth.instance.signOut();
+                          }
                         },
                       ),
                     ],
